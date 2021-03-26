@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzPrizeMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzPrize">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="proportion" jdbcType="INTEGER" property="proportion" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+    <result column="no" jdbcType="INTEGER" property="no" />
+    <result column="prize_type" jdbcType="INTEGER" property="prizeType" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzPrize">
+    INSERT INTO hfz_prize(id
+    <trim prefix="   ">
+      <if test="type != null"> , type</if>
+      <if test="content != null"> , content</if>
+      <if test="proportion != null"> , proportion</if>
+      <if test="delStatus != null"> , del_status</if>
+      <if test="no != null"> , no</if>
+      <if test="prizeType != null"> , prize_type</if>
+      <if test="img != null"> , img</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="type != null">, #{type} </if>
+      <if test="content != null">, #{content} </if>
+      <if test="proportion != null">, #{proportion} </if>
+      <if test="delStatus != null">, #{delStatus} </if>
+      <if test="no != null">, #{no} </if>
+      <if test="prizeType != null">, #{prizeType} </if>
+      <if test="img != null">, #{img} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzPrize" resultMap="BaseResultMap">
+    SELECT * FROM hfz_prize
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="type != null"> AND type = #{type} </if>
+      <if test="content != null"> AND content = #{content} </if>
+      <if test="proportion != null"> AND proportion = #{proportion} </if>
+      <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+      <if test="no != null"> AND no = #{no} </if>
+      <if test="prizeType != null"> AND prize_type = #{prizeType} </if>
+      <if test="img != null"> AND img = #{img} </if>
+    </trim>
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzPrize">
+    UPDATE hfz_prize
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="type != null"> , type = #{type}</if>
+      <if test="content != null"> , content = #{content}</if>
+      <if test="proportion != null"> , proportion = #{proportion}</if>
+      <if test="delStatus != null"> , del_status = #{delStatus}</if>
+      <if test="no != null"> , no = #{no}</if>
+      <if test="prizeType != null"> , prize_type = #{prizeType}</if>
+      <if test="img != null"> , img = #{img}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_prize SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

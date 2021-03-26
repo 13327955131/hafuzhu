@@ -1,0 +1,79 @@
+<title>
+    编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+
+    <script type="text/html" template>
+        <div class="layui-form-item">
+            <label class="layui-form-label">抽奖/合成</label>
+            <div class="layui-input-block">
+                <select name="prizeType">
+                    <option value="1" {{1==d.params.prizeType?'selected':''}}>抽奖</option>
+                    <option value="2" {{2==d.params.prizeType?'selected':''}}>合成</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">奖品类型</label>
+            <div class="layui-input-block">
+                <select name="type"  id="typeId" lay-filter="typeLay">
+                    <option value="1" {{1==d.params.type?'selected':''}}>福币</option>
+                    <option value="2" {{2==d.params.type?'selected':''}}>红包</option>
+                    <option value="3" {{3==d.params.type?'selected':''}}>福卡</option>
+                    <option value="4" {{4==d.params.type?'selected':''}}>收益卡</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">奖品内容</label>
+            <div class="layui-input-block putongC">
+                <input type="text" name="content" value="{{ d.params.content || ''
+				}}" class="layui-input content1"  placeholder="奖品内容">
+            </div>
+            <div class="layui-input-block selectC" style="display: none">
+                <select id="contentId" lay-search="" lay-filter="contentId" class="content content2" name="content">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-inline">
+                <input name="img" id="LAY_avatarSrc" placeholder="图片地址" value="{{ d.params.img || '' }}"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+                <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
+            </div>
+        </div>
+        <div class="layui-form-item noClass">
+            <label class="layui-form-label">数量(分)</label>
+            <div class="layui-input-block">
+                <input type="text" id="noId" name="no" value="{{ d.params.no || '' }}" class="layui-input" lay-verify="number"
+                       placeholder="数量">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">概率</label>
+            <div class="layui-input-block">
+                <input type="text" name="proportion" value="{{ d.params.proportion || '' }}" class="layui-input" lay-verify="number"
+                       placeholder="概率">
+            </div>
+        </div>
+    </script>
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="LAY-prize-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+        });
+    };
+</script>

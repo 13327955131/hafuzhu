@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.CmsMenuMapper">
+	<resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.CmsMenu">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="title" jdbcType="VARCHAR" property="title" />
+		<result column="icon" jdbcType="VARCHAR" property="icon" />
+		<result column="jump" jdbcType="VARCHAR" property="jump" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="spread" jdbcType="INTEGER" property="spread" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="is_use" jdbcType="INTEGER" property="isUse" />
+		<result column="del_status" jdbcType="INTEGER" property="delStatus" />
+		<result column="parent_id" jdbcType="INTEGER" property="parentId" />
+		<result column="sequence" jdbcType="INTEGER" property="sequence" />
+		<result column="route" jdbcType="VARCHAR" property="route" />
+	</resultMap>
+
+	<sql id="BaseColum">
+		id, title, icon, jump, name, spread, type, is_use, del_status, parent_id, sequence, route
+	</sql>
+
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.hoostec.hfz.entity.CmsMenu">
+		INSERT INTO cms_menu(id
+		<trim prefix="   ">
+			<if test="title != null"> , title</if>
+			<if test="icon != null"> , icon</if>
+			<if test="jump != null"> , jump</if>
+			<if test="name != null"> , name</if>
+			<if test="spread != null"> , spread</if>
+			<if test="type != null"> , type</if>
+			<if test="isUse != null"> , is_use</if>
+			<if test="delStatus != null"> , del_status</if>
+			<if test="parentId != null"> , parent_id</if>
+			<if test="sequence != null"> , sequence</if>
+			<if test="route != null"> , route</if>
+		</trim>
+		)
+		VALUES(default
+		<trim prefix="   ">
+			<if test="title != null">, #{title} </if>
+			<if test="icon != null">, #{icon} </if>
+			<if test="jump != null">, #{jump} </if>
+			<if test="name != null">, #{name} </if>
+			<if test="spread != null">, #{spread} </if>
+			<if test="type != null">, #{type} </if>
+			<if test="isUse != null">, #{isUse} </if>
+			<if test="delStatus != null">, #{delStatus} </if>
+			<if test="parentId != null">, #{parentId} </if>
+			<if test="sequence != null">, #{sequence} </if>
+			<if test="route != null">, #{route} </if>
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="Integer">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<!-- 查询满足条件的全部记录 -->
+	<select id="selectAll" parameterType="com.hoostec.hfz.entity.CmsMenu" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColum" />
+		FROM cms_menu
+		<trim prefix=" WHERE " prefixOverrides="AND">
+			<if test="id != null"> AND id = #{id} </if>
+			<if test="title != null"> AND title = #{title} </if>
+			<if test="icon != null"> AND icon = #{icon} </if>
+			<if test="jump != null"> AND jump = #{jump} </if>
+			<if test="name != null"> AND name = #{name} </if>
+			<if test="spread != null"> AND spread = #{spread} </if>
+			<if test="type != null"> AND type = #{type} </if>
+			<if test="isUse != null"> AND is_use = #{isUse} </if>
+			<if test="delStatus != null"> AND del_status = #{delStatus} </if>
+			<if test="parentId != null"> AND parent_id = #{parentId} </if>
+			<if test="sequence != null"> AND sequence = #{sequence} </if>
+			<if test="route != null"> AND route = #{route} </if>
+		</trim>
+	</select>
+
+	<!-- 查询角色-菜单 -->
+	<select id="selectRoleMenus" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT
+			m.id, m.title, m.icon, m.jump, m.name, m.spread, m.type, m.is_use, m.parent_id, m.sequence, m.route
+		FROM
+			cms_role_menu r
+		LEFT JOIN cms_menu m ON r.menu_id = m.id
+		WHERE
+			r.role_id = #{roleId}
+		ORDER BY
+		m.sequence ASC
+	</select>
+	<!-- 修改 -->
+	<update id="update" parameterType="com.hoostec.hfz.entity.CmsMenu">
+		UPDATE cms_menu
+		<trim prefix=" SET  " prefixOverrides=",">
+			<if test="title != null"> , title = #{title}</if>
+			<if test="icon != null"> , icon = #{icon}</if>
+			<if test="jump != null"> , jump = #{jump}</if>
+			<if test="name != null"> , name = #{name}</if>
+			<if test="spread != null"> , spread = #{spread}</if>
+			<if test="type != null"> , type = #{type}</if>
+			<if test="isUse != null"> , is_use = #{isUse}</if>
+			<if test="delStatus != null"> , del_status = #{delStatus}</if>
+			<if test="parentId != null"> , parent_id = #{parentId}</if>
+			<if test="sequence != null"> , sequence = #{sequence}</if>
+			<if test="route != null"> , route = #{route}</if>
+		</trim>
+		<trim prefix=" WHERE  " prefixOverrides="">
+			<if test="id != 0"> id = #{id}</if>
+		</trim>
+	</update>
+	<!-- 批量删除 -->
+	<delete id="deleteAll" parameterType="java.util.List">
+		UPDATE cms_menu SET del_status=-1 WHERE id IN
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+</mapper>

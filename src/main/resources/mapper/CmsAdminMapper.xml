@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.CmsAdminMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.CmsAdmin">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="head_img" jdbcType="VARCHAR" property="headImg"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="roleName" jdbcType="VARCHAR" property="roleName"/>
+        <result column="remark" jdbcType="LONGVARCHAR" property="remark"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime"/>
+        <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp"/>
+        <result column="domain" jdbcType="VARCHAR" property="domain"/>
+    </resultMap>
+
+    <!-- 数据库基础字段 -->
+    <sql id="BaseColumn">
+        id, username, password, head_img, email, role_id, del_status, create_time, nick_name, remark, phone,domain
+    </sql>
+
+    <!-- 根据用户名查询用户 -->
+    <select id="selectUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumn"/>
+        from cms_admin where username = #{username}
+    </select>
+
+    <!-- 根据用户Id查询用户 -->
+    <select id="selectOne" parameterType="int" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumn"/>
+        from cms_admin where id=#{userId}
+    </select>
+
+    <!-- 查询满足条件的全部记录 -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.CmsAdmin" resultMap="BaseResultMap">
+        SELECT
+        a.id, a.username, a.password, a.head_img, a.email, a.role_id, a.del_status, a.create_time, a.nick_name,a.phone,a.domain,
+        a.remark, r.name as roleName
+        FROM cms_admin a left join cms_role r on a.role_id = r.id
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND a.id = #{id}</if>
+            <if test="username != null">AND a.username = #{username}</if>
+            <if test="password != null">AND a.password = #{password}</if>
+            <if test="headImg != null">AND a.head_img = #{headImg}</if>
+            <if test="email != null">AND a.email = #{email}</if>
+            <if test="roleId != null">AND a.role_id = #{roleId}</if>
+            <if test="delStatus != null">AND a.del_status = #{delStatus}</if>
+            <if test="createTime != null">AND a.create_time = #{createTime}</if>
+            <if test="nickName != null">AND a.nick_name = #{nickName}</if>
+            <if test="phone != null">AND a.phone = #{phone}</if>
+            <if test="remark != null">AND a.remark = #{remark}</if>
+            <if test="domain != null">AND a.domain = #{domain}</if>
+        </trim>
+    </select>
+
+    <!-- 根据id更新用户信息 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.CmsAdmin">
+        UPDATE cms_admin
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="username != null">, username = #{username}</if>
+            <if test="password != null">, password = #{password}</if>
+            <if test="headImg != null">, head_img = #{headImg}</if>
+            <if test="email != null">, email = #{email}</if>
+            <if test="roleId != null">, role_id = #{roleId}</if>
+            <if test="delStatus != null">, del_status = #{delStatus}</if>
+            <if test="createTime != null">, create_time = #{createTime}</if>
+            <if test="nickName != null">, nick_name = #{nickName}</if>
+            <if test="phone != null">, phone = #{phone}</if>
+            <if test="remark != null">, remark = #{remark}</if>
+            <if test="domain != null">, domain = #{domain}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+
+    <!-- 添加 -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.CmsAdmin">
+        INSERT INTO cms_admin(id
+        <trim prefix="   ">
+            <if test="username != null">, username</if>
+            <if test="password != null">, password</if>
+            <if test="headImg != null">, head_img</if>
+            <if test="email != null">, email</if>
+            <if test="roleId != null">, role_id</if>
+            <if test="delStatus != null">, del_status</if>
+            <if test="createTime != null">, create_time</if>
+            <if test="nickName != null">, nick_name</if>
+            <if test="phone != null">, phone</if>
+            <if test="remark != null">, remark</if>
+            <if test="domain != null">, domain</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="username != null">, #{username}</if>
+            <if test="password != null">, #{password}</if>
+            <if test="headImg != null">, #{headImg}</if>
+            <if test="email != null">, #{email}</if>
+            <if test="roleId != null">, #{roleId}</if>
+            <if test="delStatus != null">, #{delStatus}</if>
+            <if test="createTime != null">, #{createTime}</if>
+            <if test="nickName != null">, #{nickName}</if>
+            <if test="phone != null">, #{phone}</if>
+            <if test="remark != null">, #{remark}</if>
+            <if test="domain != null">, #{domain}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+
+    <!-- 批量删除 -->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE cms_admin SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

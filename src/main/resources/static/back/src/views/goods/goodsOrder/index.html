@@ -1,0 +1,72 @@
+<title>菜单管理</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>商城管理</cite>
+		</a>
+		<a>
+			<cite>商品订单</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-form-select .layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}	.layui-inline .layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+</style>
+<div class="layui-fluid">
+	<div class="layui-form" style="padding-bottom: 15px;">
+		<div class="layui-row">
+			<p class="xxx" style="display: none;">...</p>
+			<div class="layui-col-md9">
+				<div class="layui-inline">
+					<label class="layui-form-label" style="margin-top: 5px;">用户名</label>
+					<div class="layui-input-inline">
+						<input name="userName" class="layui-input"  placeholder="昵称/手机号">
+					</div>
+				</div>
+				<div class="layui-inline">
+					<label class="layui-form-label" style="margin-top: 5px;">订单状态</label>
+					<div class="layui-input-inline">
+						<select name="orderStatus" lay-search >
+							<option value="">全部</option>
+							<option value="1">未发货</option>
+							<option value="2">已发货</option>
+							<option value="3">已完成</option>
+							<option value="4">订单异常</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-inline" style="padding-top: 5;">
+					<button class="layui-btn layuiadmin-btn-list" style="margin-top: 5px;" lay-submit lay-filter="LAY-goodsOrder-search">
+						搜索
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="layui-card" style="padding:15px">
+
+		<table id="LAY-goodsOrder-list" lay-filter="LAY-goodsOrder-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('goodsOrder', layui.factory('goodsOrder'));
+
+
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render();
+        });
+    };
+
+</script>

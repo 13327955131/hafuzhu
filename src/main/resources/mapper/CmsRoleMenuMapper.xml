@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.CmsRoleMenuMapper">
+	<resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.CmsRoleMenu">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="menu_id" jdbcType="INTEGER" property="menuId" />
+		<result column="role_id" jdbcType="INTEGER" property="roleId" />
+	</resultMap>
+
+	<!--批量删除角色权限 -->
+	<delete id="deleteAllByRole" parameterType="int">
+		DELETE FROM cms_role_menu WHERE role_id = #{roleId}
+	</delete>
+
+	<!--批量删除角色权限/批量插入角色权限 -->
+	<insert id="insertAllByRole" parameterType="com.hoostec.hfz.entity.CmsRoleMenu">
+		INSERT INTO cms_role_menu(id,menu_id,role_id) values
+		<foreach collection="authIds" item="authId" index="index" separator=",">
+			(default,
+			#{authId},
+			#{roleId}
+			)
+		</foreach>
+	</insert>
+
+	<!-- 查询满足条件的全部记录 -->
+	<select id="selectAuthIds" parameterType="int" resultType="java.lang.Integer">
+		SELECT menu_id FROM cms_role_menu WHERE role_id = #{roleId}
+	</select>
+</mapper>

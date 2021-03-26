@@ -1,0 +1,110 @@
+<title>设置我的资料</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">系统管理</a> <a><cite>微信配置</cite></a> </a>
+    </div>
+</div>
+<style>
+    .layui-form-label{
+        width: 150px;
+    }
+    .layui-form-item .layui-input-inline{
+        width: 500px;
+    }
+
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">设置微信配置资料</div>
+        <div class="layui-card-body" pad15>
+            <script type="text/html" template lay-url="{{ layui.setter.apiUrl }}/hfz/sys/hfzConfigWx" lay-done="layui.data.done(d)">
+                <div class="layui-form" lay-filter="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">微信公众号appId</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="appId" value="{{d.data.appId}}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公众号密钥</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="appSecret" value="{{d.data.appSecret}}"  class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商户id</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="mchId" value="{{d.data.mchId}}"  class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">oss 商户密钥</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="mchSecret" value="{{d.data.mchSecret}}"  class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">模板</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="templateId" value="{{d.data.templateId}}"  class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">QQ</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="qq" value="{{d.data.qq}}"  class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="setmyinfo">确认修改</button>
+                        </div>
+                    </div>
+
+                    <input type="text" name="id" value="{{d.data.id}}"  class="layui-input" style="display: none">
+                </div>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.data.done = function(d) {
+        layui.use([ 'form', 'set' ], function() {
+            form = layui.form,
+                admin=layui.admin;
+            form.render(); //渲染该模板下的动态表单
+
+
+            //设置我的资料
+            form.on('submit(setmyinfo)', function(obj) {
+
+                //提交修改
+                admin.req({
+                    url: layui.setter.apiUrl + '/hfz/sys/hfzConfigWxUpdate',
+                    method: "post",
+                    data: obj.field,
+                    success: function(res) {
+                        if(res.code == 200) {
+                            layer.msg(res.msg, {
+                                offset: '15px',
+                                icon: 1,
+                                time: 1500
+                            }, function() {
+                                admin.events.refresh();
+                            });
+                        }
+
+                    }
+                });
+                return false;
+            });
+        });
+    };
+</script>

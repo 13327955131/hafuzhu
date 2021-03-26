@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzTaskMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzTask">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="type1" jdbcType="INTEGER" property="type1" />
+    <result column="type2" jdbcType="INTEGER" property="type2" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+    <result column="taskNum" jdbcType="INTEGER" property="taskNum" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzTask">
+    INSERT INTO hfz_task(id
+    <trim prefix="   ">
+      <if test="num != null"> , num</if>
+      <if test="type1 != null"> , type1</if>
+      <if test="type2 != null"> , type2</if>
+      <if test="url != null"> , url</if>
+      <if test="integral != null"> , integral</if>
+      <if test="delStatus != null"> , del_status</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="num != null">, #{num} </if>
+      <if test="type1 != null">, #{type1} </if>
+      <if test="type2 != null">, #{type2} </if>
+      <if test="url != null">, #{url} </if>
+      <if test="integral != null">, #{integral} </if>
+      <if test="delStatus != null">, #{delStatus} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzTask" resultMap="BaseResultMap">
+    select  count(us.task_id) taskNum ,sk.*  from hfz_user_task_record us  LEFT JOIN hfz_task sk on  us.task_id = sk.id
+    where sk.del_status=1
+      <if test="id != null"> AND sk.id = #{id} </if>
+      <if test="num != null"> AND sk.num = #{num} </if>
+      <if test="type1 != null"> AND sk.type1 = #{type1} </if>
+      <if test="type2 != null"> AND sk.type2 = #{type2} </if>
+      <if test="url != null"> AND sk.url = #{url} </if>
+      <if test="integral != null"> AND sk.integral = #{integral} </if>
+      <if test="delStatus != null"> AND sk.del_status = #{delStatus} </if>
+    GROUP BY us.task_id
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzTask">
+    UPDATE hfz_task
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="num != null"> , num = #{num}</if>
+      <if test="type1 != null"> , type1 = #{type1}</if>
+      <if test="type2 != null"> , type2 = #{type2}</if>
+      <if test="url != null"> , url = #{url}</if>
+      <if test="integral != null"> , integral = #{integral}</if>
+      <if test="delStatus != null"> , del_status = #{delStatus}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_task SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

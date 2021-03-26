@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzLuckDrawRecordMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzLuckDrawRecord">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="draw_time" jdbcType="TIMESTAMP" property="drawTime"/>
+        <result column="draw_result" jdbcType="VARCHAR" property="drawResult"/>
+        <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+    </resultMap>
+    <!-- 添加  -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzLuckDrawRecord">
+        INSERT INTO hfz_luck_draw_record(id
+        <trim prefix="   ">
+            <if test="userId != null">, user_id</if>
+            <if test="drawTime != null">, draw_time</if>
+            <if test="drawResult != null">, draw_result</if>
+            <if test="delStatus != null">, del_status</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="userId != null">, #{userId}</if>
+            <if test="drawTime != null">, #{drawTime}</if>
+            <if test="drawResult != null">, #{drawResult}</if>
+            <if test="delStatus != null">, #{delStatus}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzLuckDrawRecord" resultMap="BaseResultMap">
+        SELECT * FROM hfz_luck_draw_record
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="drawTime != null">AND draw_time = #{drawTime}</if>
+            <if test="drawResult != null">AND draw_result = #{drawResult}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+        </trim>
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzLuckDrawRecord">
+        UPDATE hfz_luck_draw_record
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="userId != null">, user_id = #{userId}</if>
+            <if test="drawTime != null">, draw_time = #{drawTime}</if>
+            <if test="drawResult != null">, draw_result = #{drawResult}</if>
+            <if test="delStatus != null">, del_status = #{delStatus}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+    <!-- 批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE hfz_luck_draw_record SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzLuckDrawRecord" resultMap="BaseResultMap">
+        SELECT hfz_luck_draw_record.* , hfz_user.nick_name userName,hfz_user.phone userPhone,hfz_prize.content prizeName FROM hfz_luck_draw_record left join hfz_user on  hfz_luck_draw_record.user_id=hfz_user.id
+        left join hfz_prize on  hfz_luck_draw_record.draw_result=hfz_prize.id
+        where hfz_user.user_status=1
+            <if test="id != null">AND hfz_luck_draw_record.id = #{id}</if>
+            <if test="userId != null">AND hfz_luck_draw_record.user_id = #{userId}</if>
+            <if test="drawTime != null">AND hfz_luck_draw_record.draw_time = #{drawTime}</if>
+            <if test="drawResult != null">AND hfz_luck_draw_record.draw_result = #{drawResult}</if>
+            <if test="delStatus != null">AND hfz_luck_draw_record.del_status = #{delStatus}</if>
+            <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+        order by hfz_luck_draw_record.id desc
+    </select>
+
+</mapper>

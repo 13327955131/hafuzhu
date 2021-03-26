@@ -1,0 +1,29 @@
+<title>问题反馈</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>系统管理</cite>
+		</a>
+		<a>
+			<cite>问题反馈</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-form-select .layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+</style>
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<table id="LAY-feedback-list" lay-filter="LAY-feedback-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('feedback', layui.factory('feedback'));
+
+</script>

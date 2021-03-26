@@ -1,0 +1,22 @@
+<title>菜单管理</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>权限中心</cite>
+		</a>
+		<a>
+			<cite>菜单管理</cite>
+		</a>
+	</div>
+</div>
+
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<table id="LAY-menu-list" lay-filter="LAY-menu-list"></table>
+	</div>
+</div>
+	<script>
+		layui.use('menu', layui.factory('menu'));
+	</script>

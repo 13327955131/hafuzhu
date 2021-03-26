@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzUserBalanceMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzUserBalance">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="integral" jdbcType="INTEGER" property="integral" />
+    <result column="profit" jdbcType="INTEGER" property="profit" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+    <result column="draw_num" jdbcType="INTEGER" property="drawNum" />
+    <result column="first_pick_status" jdbcType="INTEGER" property="firstPickStatus" />
+    <result column="real_name_status" jdbcType="INTEGER" property="realNameStatus" />
+    <result column="day_task_status" jdbcType="INTEGER" property="dayTaskStatus" />
+    <result column="wx_bind_status" jdbcType="INTEGER" property="wxBindStatus" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzUserBalance">
+    INSERT INTO hfz_user_balance(id
+    <trim prefix="   ">
+      <if test="integral != null"> , integral</if>
+      <if test="profit != null"> , profit</if>
+      <if test="userId != null"> , user_id</if>
+      <if test="delStatus != null"> , del_status</if>
+      <if test="drawNum != null"> , draw_num</if>
+      <if test="firstPickStatus != null"> , first_pick_status</if>
+      <if test="realNameStatus != null"> , real_name_status</if>
+      <if test="dayTaskStatus != null"> , day_task_status</if>
+      <if test="wxBindStatus != null"> , wx_bind_status</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="integral != null">, #{integral} </if>
+      <if test="profit != null">, #{profit} </if>
+      <if test="userId != null">, #{userId} </if>
+      <if test="delStatus != null">, #{delStatus} </if>
+      <if test="drawNum != null">, #{drawNum} </if>
+      <if test="firstPickStatus != null">, #{firstPickStatus} </if>
+      <if test="realNameStatus != null">, #{realNameStatus} </if>
+      <if test="dayTaskStatus != null">, #{dayTaskStatus} </if>
+      <if test="wxBindStatus != null">, #{wxBindStatus} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzUserBalance" resultMap="BaseResultMap">
+    SELECT * FROM hfz_user_balance
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="integral != null"> AND integral = #{integral} </if>
+      <if test="profit != null"> AND profit = #{profit} </if>
+      <if test="userId != null"> AND user_id = #{userId} </if>
+      <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+      <if test="drawNum != null"> AND draw_num = #{drawNum} </if>
+      <if test="firstPickStatus != null"> AND first_pick_status = #{firstPickStatus} </if>
+      <if test="realNameStatus != null"> AND real_name_status = #{realNameStatus} </if>
+      <if test="dayTaskStatus != null"> AND day_task_status = #{dayTaskStatus} </if>
+      <if test="wxBindStatus != null"> AND wx_bind_status = #{wxBindStatus} </if>
+    </trim>
+  </select>
+
+  <!-- 关联用户表  -->
+  <select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzUserBalance" resultMap="BaseResultMap">
+ SELECT hfz_user_balance.*,hfz_user.nick_name userName,hfz_user.phone userPhone
+FROM hfz_user_balance
+LEFT JOIN hfz_user
+ON hfz_user_balance.user_id=hfz_user.id
+    where hfz_user.user_status=1
+      <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+      <if test="id != null"> AND hfz_user_balance.id = #{id} </if>
+      <if test="integral != null"> AND hfz_user_balance.integral = #{integral} </if>
+      <if test="profit != null"> AND hfz_user_balance.profit = #{profit} </if>
+      <if test="userId != null"> AND hfz_user_balance.user_id = #{userId} </if>
+      <if test="delStatus != null"> AND hfz_user_balance.del_status = #{delStatus} </if>
+      <if test="drawNum != null"> AND hfz_user_balance.draw_num = #{drawNum} </if>
+      <if test="firstPickStatus != null"> AND hfz_user_balance.first_pick_status = #{firstPickStatus} </if>
+      <if test="realNameStatus != null"> AND hfz_user_balance.real_name_status = #{realNameStatus} </if>
+      <if test="dayTaskStatus != null"> AND hfz_user_balance.day_task_status = #{dayTaskStatus} </if>
+      <if test="wxBindStatus != null"> AND hfz_user_balance.wx_bind_status = #{wxBindStatus} </if>
+
+    order by hfz_user_balance.profit desc, hfz_user_balance.integral desc
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzUserBalance">
+    UPDATE hfz_user_balance
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="integral != null"> , integral = #{integral}</if>
+      <if test="profit != null"> , profit = #{profit}</if>
+      <if test="userId != null"> , user_id = #{userId}</if>
+      <if test="delStatus != null"> , del_status = #{delStatus}</if>
+      <if test="drawNum != null"> , draw_num = #{drawNum}</if>
+      <if test="firstPickStatus != null"> , first_pick_status = #{firstPickStatus}</if>
+      <if test="realNameStatus != null"> , real_name_status = #{realNameStatus}</if>
+      <if test="dayTaskStatus != null"> , day_task_status = #{dayTaskStatus}</if>
+      <if test="wxBindStatus != null"> , wx_bind_status = #{wxBindStatus}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_user_balance SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

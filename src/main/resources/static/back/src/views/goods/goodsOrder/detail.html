@@ -1,0 +1,55 @@
+<title>
+    编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+
+    <script type="text/html" template>
+
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">处理状态</label>
+            <div class="layui-input-block">
+                <select name="orderStatus">
+                    <option value="1" {{d.params.orderStatus=='1'?'selected':''}}>未发货</option>
+                    <option value="2" {{d.params.orderStatus=='2'?'selected':''}}>已发货</option>
+                    <option value="3" {{d.params.orderStatus=='3'?'selected':''}}>已完成</option>
+                    <option value="4" {{d.params.orderStatus=='4'?'selected':''}}>异常订单</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">物流号</label>
+            <div class="layui-input-block">
+                <input type="text" name="orderCode" value="{{ d.params.orderCode || ''
+				}}" class="layui-input"  placeholder="请输入物流号">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">姓名电话</label>
+            <div class="layui-input-block">
+                <input type="text" name="orderCode" value="{{ d.params.name}}-{{ d.params.phone}}" class="layui-input"  placeholder="请完善收货地址信息">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="orderCode" value="{{ d.params.province}}-{{ d.params.city}}-{{ d.params.county}}-{{ d.params.address}}" class="layui-input"  placeholder="请完善收货地址信息">
+            </div>
+        </div>
+
+
+
+    </script>
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="LAY-goodsOrder-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+        });
+    };
+</script>

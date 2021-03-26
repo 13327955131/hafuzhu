@@ -1,0 +1,102 @@
+<title>设置分享基本信息</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">系统管理</a> <a><cite>设置分享基本信息</cite></a> </a>
+    </div>
+</div>
+<style>
+    .layui-form-label{
+        width: 150px;
+    }
+    .layui-form-item .layui-input-inline{
+        width: 500px;
+    }
+
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">设置分享基本信息</div>
+        <div class="layui-card-body" pad15>
+            <script type="text/html" template lay-url="{{ layui.setter.apiUrl }}/hfz/sys/hfzConfigShare" lay-done="layui.data.done(d)">
+                <div class="layui-form" lay-filter="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">分享标题</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="title" value="{{d.data.title}}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">跳转地址</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="url" value="{{d.data.url}}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">封面图片</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="LAY_avatarSrc"  name="img" value="{{d.data.img}}"  class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                            <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                                <i class="layui-icon">&#xe67c;</i>上传图片
+                            </button>
+                            <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">备注</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="remark" value="{{d.data.remark}}"  class="layui-input">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="setmyinfo">确认修改</button>
+                        </div>
+                    </div>
+
+                    <input type="text" name="id" value="{{d.data.id}}"  class="layui-input" style="display: none">
+                </div>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.data.done = function(d) {
+        layui.use([ 'form', 'set' ], function() {
+            form = layui.form,
+                admin=layui.admin;
+            form.render(); //渲染该模板下的动态表单
+
+
+            //设置我的资料
+            form.on('submit(setmyinfo)', function(obj) {
+
+                //提交修改
+                admin.req({
+                    url: layui.setter.apiUrl + '/hfz/sys/hfzConfigShareUpdate',
+                    method: "post",
+                    data: obj.field,
+                    success: function(res) {
+                        if(res.code == 200) {
+                            layer.msg(res.msg, {
+                                offset: '15px',
+                                icon: 1,
+                                time: 1500
+                            }, function() {
+                                admin.events.refresh();
+                            });
+                        }
+
+                    }
+                });
+                return false;
+            });
+        });
+    };
+</script>

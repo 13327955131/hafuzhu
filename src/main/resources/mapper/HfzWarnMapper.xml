@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzWarnMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzWarn">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="handle_status" jdbcType="INTEGER" property="handleStatus" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="msg" jdbcType="LONGVARCHAR" property="msg" />
+    <result column="user_id" jdbcType="LONGVARCHAR" property="userId" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzWarn">
+    INSERT INTO hfz_warn(id
+    <trim prefix="   ">
+      <if test="handleStatus != null"> , handle_status</if>
+      <if test="createTime != null"> , create_time</if>
+      <if test="msg != null"> , msg</if>
+      <if test="userId != null"> , user_id</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="handleStatus != null">, #{handleStatus} </if>
+      <if test="createTime != null">, #{createTime} </if>
+      <if test="msg != null">, #{msg} </if>
+      <if test="userId != null">, #{userId} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzWarn" resultMap="BaseResultMap">
+    SELECT * FROM hfz_warn
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="handleStatus != null"> AND handle_status = #{handleStatus} </if>
+      <if test="createTime != null"> AND create_time = #{createTime} </if>
+      <if test="msg != null"> AND msg = #{msg} </if>
+      <if test="userId != null"> AND concat(user_id)  like '%${userId}%'  </if>
+    </trim>
+    order by id desc
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzWarn">
+    UPDATE hfz_warn
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="handleStatus != null"> , handle_status = #{handleStatus}</if>
+      <if test="createTime != null"> , create_time = #{createTime}</if>
+      <if test="msg != null"> , msg = #{msg}</if>
+      <if test="userId != null"> , user_id = #{userId}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+
+</mapper>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzMessageMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzMessage">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="read_status" jdbcType="INTEGER" property="readStatus"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <!-- 添加  -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzMessage">
+        INSERT INTO hfz_message(id
+        <trim prefix="   ">
+            <if test="title != null">, title</if>
+            <if test="userId != null">, user_id</if>
+            <if test="createTime != null">, create_time</if>
+            <if test="readStatus != null">, read_status</if>
+            <if test="content != null">, content</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="title != null">, #{title}</if>
+            <if test="userId != null">, #{userId}</if>
+            <if test="createTime != null">, #{createTime}</if>
+            <if test="readStatus != null">, #{readStatus}</if>
+            <if test="content != null">, #{content}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzMessage" resultMap="BaseResultMap">
+        SELECT * FROM hfz_message
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="title != null">AND title = #{title}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="createTime != null">AND create_time = #{createTime}</if>
+            <if test="readStatus != null">AND read_status = #{readStatus}</if>
+            <if test="content != null">AND content = #{content}</if>
+        </trim>
+    </select>
+
+
+
+
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectMessageList" parameterType="com.hoostec.hfz.entity.HfzMessage" resultMap="BaseResultMap">
+        SELECT * FROM hfz_message
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="title != null">AND title = #{title}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="createTime != null">AND create_time = #{createTime}</if>
+            <if test="readStatus != null">AND read_status = #{readStatus}</if>
+            <if test="content != null">AND content = #{content}</if>
+        </trim>
+    </select>
+
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzMessage">
+        UPDATE hfz_message
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="title != null">, title = #{title}</if>
+            <if test="userId != null">, user_id = #{userId}</if>
+            <if test="createTime != null">, create_time = #{createTime}</if>
+            <if test="readStatus != null">, read_status = #{readStatus}</if>
+            <if test="content != null">, content = #{content}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+    <!-- 批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE hfz_message SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzMessage" resultMap="BaseResultMap">
+        SELECT hfz_message.* , hfz_user.nick_name userName FROM hfz_message left join hfz_user on  hfz_message.user_id=hfz_user.id
+        where hfz_user.user_status=1
+            <if test="id != null">AND hfz_message.id = #{id}</if>
+            <if test="title != null">AND hfz_message.title = #{title}</if>
+            <if test="userId != null">AND hfz_message.user_id = #{userId}</if>
+            <if test="createTime != null">AND hfz_message.create_time = #{createTime}</if>
+            <if test="readStatus != null">AND hfz_message.read_status = #{readStatus}</if>
+            <if test="content != null">AND hfz_message.content = #{content}</if>
+        order by hfz_message.id desc
+
+    </select>
+
+</mapper>

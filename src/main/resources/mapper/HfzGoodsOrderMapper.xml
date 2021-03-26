@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzGoodsOrderMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzGoodsOrder">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="goods_id" jdbcType="INTEGER" property="goodsId"/>
+        <result column="exchange_time" jdbcType="TIMESTAMP" property="exchangeTime"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+        <result column="order_status" jdbcType="INTEGER" property="orderStatus"/>
+        <result column="order_code" jdbcType="VARCHAR" property="orderCode"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+        <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+
+        <!--用户地址信息-->
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="county" jdbcType="VARCHAR" property="county" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="phone" jdbcType="VARCHAR" property="phone" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+
+       <!-- <association property="hfzUserAddress" javaType="com.hoostec.hfz.entity.HfzUserAddress"
+                     resultMap="com.hoostec.hfz.dao.HfzUserAddressMapper.BaseResultMap"></association>-->
+
+    </resultMap>
+    <!-- 添加  -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzGoodsOrder">
+        INSERT INTO hfz_goods_order(id
+        <trim prefix="   ">
+            <if test="userId != null">, user_id</if>
+            <if test="goodsId != null">, goods_id</if>
+            <if test="exchangeTime != null">, exchange_time</if>
+            <if test="num != null">, num</if>
+            <if test="orderStatus != null">, order_status</if>
+            <if test="orderCode != null">, order_code</if>
+            <if test="delStatus != null">, del_status</if>
+            <if test="remarks != null">, remarks</if>
+            <if test="orderNo != null">, order_no</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="userId != null">, #{userId}</if>
+            <if test="goodsId != null">, #{goodsId}</if>
+            <if test="exchangeTime != null">, #{exchangeTime}</if>
+            <if test="num != null">, #{num}</if>
+            <if test="orderStatus != null">, #{orderStatus}</if>
+            <if test="orderCode != null">, #{orderCode}</if>
+            <if test="delStatus != null">, #{delStatus}</if>
+            <if test="remarks != null">, #{remarks}</if>
+            <if test="orderNo != null">, #{orderNo}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzGoodsOrder" resultMap="BaseResultMap">
+        SELECT * FROM hfz_goods_order
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="goodsId != null">AND goods_id = #{goodsId}</if>
+            <if test="exchangeTime != null">AND exchange_time = #{exchangeTime}</if>
+            <if test="num != null">AND num = #{num}</if>
+            <if test="orderStatus != null">AND order_status = #{orderStatus}</if>
+            <if test="orderCode != null">AND order_code = #{orderCode}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+            <if test="remarks != null">AND remarks = #{remarks}</if>
+            <if test="orderNo != null">AND order_no = #{orderNo}</if>
+        </trim>
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzGoodsOrder">
+        UPDATE hfz_goods_order
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="userId != null">, user_id = #{userId}</if>
+            <if test="goodsId != null">, goods_id = #{goodsId}</if>
+            <if test="exchangeTime != null">, exchange_time = #{exchangeTime}</if>
+            <if test="num != null">, num = #{num}</if>
+            <if test="orderStatus != null">, order_status = #{orderStatus}</if>
+            <if test="orderCode != null">, order_code = #{orderCode}</if>
+            <if test="delStatus != null">, del_status = #{delStatus}</if>
+            <if test="remarks != null">, remarks = #{orderNo}</if>
+            <if test="orderNo != null">, order_no = #{orderNo}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+    <!-- 批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE hfz_goods_order SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <!-- 关联用户表/商品表  -->
+    <select id="selectAllUserGoods" parameterType="com.hoostec.hfz.entity.HfzGoodsOrder" resultMap="BaseResultMap">
+        SELECT hfz_goods_order.*,hfz_goods.name goodsName ,hfz_user.nick_name userName,hfz_user_address.* ,hfz_user.phone userPhone
+        FROM hfz_goods_order
+        LEFT JOIN hfz_goods
+        ON hfz_goods_order.goods_id=hfz_goods.id
+        LEFT JOIN hfz_user
+        ON hfz_goods_order.user_id=hfz_user.id
+        LEFT JOIN hfz_user_address
+        ON hfz_goods_order.user_id=hfz_user_address.user_id
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND hfz_goods_order.id = #{id}</if>
+            <if test="userId != null">AND hfz_goods_order.user_id = #{userId}</if>
+            <if test="goodsId != null">AND hfz_goods_order.goods_id = #{goodsId}</if>
+            <if test="exchangeTime != null">AND hfz_goods_order.exchange_time = #{exchangeTime}</if>
+            <if test="num != null">AND hfz_goods_order.num = #{num}</if>
+            <if test="orderStatus != null">AND hfz_goods_order.order_status = #{orderStatus}</if>
+            <if test="orderCode != null">AND hfz_goods_order.order_code = #{orderCode}</if>
+            <if test="delStatus != null">AND hfz_goods_order.del_status = #{delStatus}</if>
+            <if test="remarks != null">AND hfz_goods_order.remarks = #{remarks}</if>
+            <if test="orderNo != null">AND hfz_goods_order.order_no = #{orderNo}</if>
+            <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+        </trim>
+        order by hfz_goods_order.id desc
+    </select>
+
+
+    <resultMap id="BaseResultMap1" type="com.hoostec.hfz.dto.GoodInfoDto">
+        <result column="exchangeTime" jdbcType="TIMESTAMP" property="exchangeTime"/>
+        <result column="goodNum" jdbcType="INTEGER" property="goodNum"/>
+        <result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="goodName" jdbcType="VARCHAR" property="goodName"/>
+    </resultMap>
+
+    <!-- 关联用户表/商品表  -->
+    <select id="selectAllUserGood" parameterType="com.hoostec.hfz.entity.HfzGoodsOrder" resultMap="BaseResultMap1">
+        SELECT hfz_goods_order.num as goodNum,DATE_FORMAT(hfz_goods_order.exchange_time, '%Y-%m-%d') as exchangeTime,hfz_goods.name goodName
+        ,CONCAT(ua.province,ua.city,ua.county,ua.address) as address,ua.name as name ,ua.phone,hfz_goods_order.remarks
+        FROM hfz_goods_order
+        LEFT JOIN hfz_goods
+        ON hfz_goods_order.goods_id=hfz_goods.id
+        LEFT JOIN hfz_user
+        ON hfz_goods_order.user_id=hfz_user.id
+        LEFT JOIN hfz_user_address ua
+        ON hfz_goods_order.user_id=ua.user_id
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND hfz_goods_order.id = #{id}</if>
+            <if test="userId != null">AND hfz_goods_order.user_id = #{userId}</if>
+            <if test="goodsId != null">AND hfz_goods_order.goods_id = #{goodsId}</if>
+            <if test="exchangeTime != null">AND hfz_goods_order.exchange_time = #{exchangeTime}</if>
+            <if test="num != null">AND hfz_goods_order.num = #{num}</if>
+            <if test="orderStatus != null">AND hfz_goods_order.order_status = #{orderStatus}</if>
+            <if test="orderCode != null">AND hfz_goods_order.order_code = #{orderCode}</if>
+            <if test="delStatus != null">AND hfz_goods_order.del_status = #{delStatus}</if>
+            <if test="remarks != null">AND hfz_goods_order.remarks = #{remarks}</if>
+            <if test="orderNo != null">AND hfz_goods_order.order_no = #{orderNo}</if>
+        </trim>
+    </select>
+</mapper>

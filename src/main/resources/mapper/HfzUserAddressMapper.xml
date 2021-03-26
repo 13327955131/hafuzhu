@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzUserAddressMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzUserAddress">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzUserAddress">
+    INSERT INTO hfz_user_address(id
+    <trim prefix="   ">
+      <if test="province != null"> , province</if>
+      <if test="city != null"> , city</if>
+      <if test="county != null"> , county</if>
+      <if test="address != null"> , address</if>
+      <if test="phone != null"> , phone</if>
+      <if test="name != null"> , name</if>
+      <if test="userId != null"> , user_id</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="province != null">, #{province} </if>
+      <if test="city != null">, #{city} </if>
+      <if test="county != null">, #{county} </if>
+      <if test="address != null">, #{address} </if>
+      <if test="phone != null">, #{phone} </if>
+      <if test="name != null">, #{name} </if>
+      <if test="userId != null">, #{userId} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzUserAddress" resultMap="BaseResultMap">
+    SELECT * FROM hfz_user_address
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="province != null"> AND province = #{province} </if>
+      <if test="city != null"> AND city = #{city} </if>
+      <if test="county != null"> AND county = #{county} </if>
+      <if test="address != null"> AND address = #{address} </if>
+      <if test="phone != null"> AND phone = #{phone} </if>
+      <if test="name != null"> AND name = #{name} </if>
+      <if test="userId != null"> AND user_id = #{userId} </if>
+    </trim>
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzUserAddress">
+    UPDATE hfz_user_address
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="province != null"> , province = #{province}</if>
+      <if test="city != null"> , city = #{city}</if>
+      <if test="county != null"> , county = #{county}</if>
+      <if test="address != null"> , address = #{address}</if>
+      <if test="phone != null"> , phone = #{phone}</if>
+      <if test="name != null"> , name = #{name}</if>
+      <if test="userId != null"> , user_id = #{userId}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_user_address SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>

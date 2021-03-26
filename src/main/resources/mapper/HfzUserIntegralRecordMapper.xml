@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzUserIntegralRecordMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzUserIntegralRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="num" jdbcType="INTEGER" property="num" />
+    <result column="use_time" jdbcType="VARCHAR" property="useTime" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzUserIntegralRecord">
+    INSERT INTO hfz_user_integral_record(id
+    <trim prefix="   ">
+      <if test="userId != null"> , user_id</if>
+      <if test="type != null"> , type</if>
+      <if test="num != null"> , num</if>
+      <if test="useTime != null"> , use_time</if>
+      <if test="msg != null"> , msg</if>
+      <if test="delStatus != null"> , del_status</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="userId != null">, #{userId} </if>
+      <if test="type != null">, #{type} </if>
+      <if test="num != null">, #{num} </if>
+      <if test="useTime != null">, #{useTime} </if>
+      <if test="msg != null">, #{msg} </if>
+      <if test="delStatus != null">, #{delStatus} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzUserIntegralRecord" resultMap="BaseResultMap">
+    SELECT * FROM hfz_user_integral_record
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="userId != null"> AND user_id = #{userId} </if>
+      <if test="type != null"> AND type = #{type} </if>
+      <if test="num != null"> AND num = #{num} </if>
+      <if test="useTime != null"> AND use_time = #{useTime} </if>
+      <if test="msg != null"> AND msg = #{msg} </if>
+      <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+    </trim>
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzUserIntegralRecord">
+    UPDATE hfz_user_integral_record
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="userId != null"> , user_id = #{userId}</if>
+      <if test="type != null"> , type = #{type}</if>
+      <if test="num != null"> , num = #{num}</if>
+      <if test="useTime != null"> , use_time = #{useTime}</if>
+      <if test="msg != null"> , msg = #{msg}</if>
+      <if test="delStatus != null"> , del_status = #{delStatus}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_user_integral_record SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <!-- 关联用户表  -->
+  <select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzUserBalance" resultMap="BaseResultMap">
+    SELECT hfz_user_integral_record.*,hfz_user.nick_name userName,hfz_user.phone userPhone
+    FROM hfz_user_integral_record
+    LEFT JOIN hfz_user
+    ON hfz_user_integral_record.user_id=hfz_user.id
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND hfz_user_integral_record.id = #{id} </if>
+      <if test="userId != null"> AND hfz_user_integral_record.user_id = #{userId} </if>
+      <if test="type != null"> AND hfz_user_integral_record.type = #{type} </if>
+      <if test="num != null"> AND hfz_user_integral_record.num = #{num} </if>
+      <if test="useTime != null"> AND hfz_user_integral_record.use_time = #{useTime} </if>
+      <if test="msg != null"> AND hfz_user_integral_record.msg = #{msg} </if>
+      <if test="delStatus != null"> AND hfz_user_integral_record.del_status = #{delStatus} </if>
+      <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+    </trim>
+    order by hfz_user_integral_record.id desc
+  </select>
+
+
+  <!-- 根据日期去重 并排序  -->
+  <select id="selectAllGroupSort" parameterType="com.hoostec.hfz.entity.HfzUserIntegralRecord" resultMap="BaseResultMap">
+    select  user_id,sum(num) num ,hfz_user.nick_name userName   from hfz_user_integral_record
+    LEFT JOIN hfz_user
+    ON hfz_user_integral_record.user_id=hfz_user.id
+    where hfz_user.user_status=1
+      <if test="id != null"> AND hfz_user_integral_record.id = #{id} </if>
+      <if test="userId != null"> AND hfz_user_integral_record.user_id = #{userId} </if>
+      <if test="type != null"> AND hfz_user_integral_record.type = #{type} </if>
+      <if test="num != null"> AND hfz_user_integral_record.num = #{num} </if>
+      <if test="useTime != null"> AND DATE_FORMAT(hfz_user_integral_record.use_time, '%Y-%m-%d') = DATE_FORMAT(CURRENT_TIME (),'%Y-%m-%d')</if>
+      <if test="msg != null"> AND hfz_user_integral_record.msg = #{msg} </if>
+      <if test="delStatus != null"> AND hfz_user_integral_record.del_status = #{delStatus} </if>
+
+    group by hfz_user_integral_record.user_id
+    ORDER BY num desc
+  </select>
+
+</mapper>

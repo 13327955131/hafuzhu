@@ -1,0 +1,107 @@
+<title>抽奖管理</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>奖品管理</cite>
+		</a>
+		<a>
+			<cite>奖品</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-form-select .layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+
+	/*调节   模板引擎  selete 框样式*/
+	.table-select {
+		display: none;
+		position: fixed!important;
+		left: inherit!important;
+		top: inherit!important;
+		padding: 5px 0;
+		z-index: 899;
+		/* min-width: 100%; */
+		border: 1px solid #d2d2d2;
+		max-height: 300px;
+		overflow-y: auto;
+		background-color: #fff;
+		border-radius: 2px;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, .12);
+		box-sizing: border-box
+	}
+	table tbody tr td .layui-select-title{
+		 margin-top: -10px;
+		height:38px;
+	 }
+	table tbody tr td,table tbody tr td .layui-table-cell{
+		padding: 0!important;
+		height:38px;
+		line-height: 38px;
+	 }
+	table tbody tr td .layui-form-select{
+		margin-top: 10px!important;
+	 }
+
+	table tbody tr{
+		height:38px;
+		line-height: 38px;
+	}
+
+	table tbody tr td .layui-select-title input{
+		border: 0;
+		text-align: center;
+		height:38px;
+	}
+</style>
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+
+
+		<div class="layui-form" style="padding-bottom: 15px;">
+			<div class="layui-row">
+				<p class="xxx" style="display: none;">...</p>
+				<div class="layui-col-md9">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="margin-top: 5px;">抽奖/合成</label>
+							<div class="layui-input-inline">
+								<select name="prizeType" lay-search >
+									<option value="">请选择</option>
+									<option value="1">抽奖</option>
+									<option value="2">合成</option>
+								</select>
+							</div>
+						</div>
+					<div class="layui-inline" style="padding-top: 5;">
+						<button class="layui-btn layuiadmin-btn-list" style="margin-top: 5px;" lay-submit lay-filter="LAY-prize-search">
+							搜索
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<table id="LAY-prize-list" lay-filter="LAY-prize-list"></table>
+		<script type="text/html" id="imgTpl">
+			<img style="display: inline-block; width: 38%; height: 100%;" src= {{ d.img }}>
+		</script>
+
+		<script type="text/html" id="typeSelect">
+			<select lay-filter="typeLay">
+				<option value="1" {{1==d.type? 'selected': ''}}>福币</option>
+				<option value="2" {{2==d.type? 'selected': ''}}>红包</option>
+				<option value="3" {{3==d.type? 'selected': ''}}>福卡</option>
+				<option value="4" {{4==d.type? 'selected': ''}}>收益卡</option>
+			</select>
+		</script>
+	</div>
+</div>
+<script>
+    layui.use('prize', layui.factory('prize'));
+</script>

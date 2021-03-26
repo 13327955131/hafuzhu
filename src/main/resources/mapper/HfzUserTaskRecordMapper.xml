@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzUserTaskRecordMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzUserTaskRecord">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="task_id" jdbcType="INTEGER" property="taskId"/>
+        <result column="complete_time" jdbcType="TIMESTAMP" property="completeTime"/>
+        <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="degree" jdbcType="INTEGER" property="degree"/>
+        <result column="second" jdbcType="INTEGER" property="second"/>
+        <result column="day_time" jdbcType="VARCHAR" property="dayTime"/>
+    </resultMap>
+    <!-- 添加  -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzUserTaskRecord">
+        INSERT INTO hfz_user_task_record(id
+        <trim prefix="   ">
+            <if test="userId != null">, user_id</if>
+            <if test="taskId != null">, task_id</if>
+            <if test="completeTime != null">, complete_time</if>
+            <if test="delStatus != null">, del_status</if>
+            <if test="type != null">, type</if>
+            <if test="dayTime != null">, day_time</if>
+            <if test="degree != null">, degree</if>
+            <if test="second != null">, second</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="userId != null">, #{userId}</if>
+            <if test="taskId != null">, #{taskId}</if>
+            <if test="completeTime != null">, #{completeTime}</if>
+            <if test="delStatus != null">, #{delStatus}</if>
+            <if test="type != null">, #{type}</if>
+            <if test="dayTime != null">, #{dayTime}</if>
+            <if test="degree != null">, #{degree}</if>
+            <if test="second != null">, #{second}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzUserTaskRecord" resultMap="BaseResultMap">
+        SELECT * FROM hfz_user_task_record
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="taskId != null">AND task_id = #{taskId}</if>
+            <if test="completeTime != null">AND complete_time = #{completeTime}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+            <if test="type != null">AND type = #{type}</if>
+            <if test="dayTime != null">AND day_time = #{dayTime}</if>
+            <if test="degree != null">AND degree = #{degree}</if>
+            <if test="second != null">AND second = #{second}</if>
+        </trim>
+    </select>
+    <!-- 根据字段求和 需要注意  IFNULL(sum(second),0)-->
+    <select id="selectNumber" parameterType="com.hoostec.hfz.entity.HfzUserTaskRecord"  resultType="int">
+        SELECT IFNULL(sum(second),0) FROM hfz_user_task_record
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="taskId != null">AND task_id = #{taskId}</if>
+            <if test="completeTime != null">AND complete_time = #{completeTime}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+            <if test="type != null">AND type = #{type}</if>
+            <if test="dayTime != null">AND day_time = #{dayTime}</if>
+            <if test="degree != null">AND degree = #{degree}</if>
+            <if test="second != null">AND second = #{second}</if>
+        </trim>
+    </select>
+    <!-- 查询满足条件的全部数量  -->
+    <select id="selectCount" parameterType="com.hoostec.hfz.entity.HfzUserTaskRecord"  resultType="int">
+        SELECT COUNT(1) FROM hfz_user_task_record
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="userId != null">AND user_id = #{userId}</if>
+            <if test="taskId != null">AND task_id = #{taskId}</if>
+            <if test="completeTime != null">AND complete_time = #{completeTime}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+            <if test="type != null">AND type = #{type}</if>
+            <if test="dayTime != null">AND day_time = #{dayTime}</if>
+            <if test="degree != null">AND degree = #{degree}</if>
+            <if test="second != null">AND second = #{second}</if>
+        </trim>
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzUserTaskRecord">
+        UPDATE hfz_user_task_record
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="userId != null">, user_id = #{userId}</if>
+            <if test="taskId != null">, task_id = #{taskId}</if>
+            <if test="completeTime != null">, complete_time = #{completeTime}</if>
+            <if test="delStatus != null">, del_status = #{delStatus}</if>
+            <if test="type != null">, type = #{type}</if>
+            <if test="dayTime != null">, day_time = #{dayTime}</if>
+            <if test="degree != null">, degree = #{degree}</if>
+            <if test="second != null">, second = #{second}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+    <!-- 批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE hfz_user_task_record SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+    <!-- 关联任务  用户表  -->
+    <select id="selectAllUserTask" parameterType="com.hoostec.hfz.entity.HfzUserTaskRecord" resultMap="BaseResultMap">
+        SELECT hfz_user_task_record.*,hfz_task.type1 ,hfz_task.type2,hfz_user.nick_name userName,hfz_user.phone userPhone
+        FROM hfz_user_task_record
+        LEFT JOIN hfz_task
+        ON hfz_user_task_record.task_id=hfz_task.id
+        LEFT JOIN hfz_user
+        ON hfz_user_task_record.user_id=hfz_user.id
+        where hfz_user.user_status=1
+            <if test="id != null">AND hfz_user_task_record.id = #{id}</if>
+            <if test="userId != null">AND hfz_user_task_record.user_id = #{userId}</if>
+            <if test="taskId != null">AND hfz_user_task_record.task_id = #{taskId}</if>
+            <if test="completeTime != null">AND hfz_user_task_record.complete_time = #{completeTime}</if>
+            <if test="delStatus != null">AND hfz_user_task_record.del_status = #{delStatus}</if>
+            <if test="type != null">AND hfz_user_task_record.type = #{type}</if>
+            <if test="dayTime != null">AND hfz_user_task_record.day_time = #{dayTime}</if>
+            <if test="degree != null">AND hfz_user_task_record.degree = #{degree}</if>
+            <if test="second != null">AND hfz_user_task_record.second = #{second}</if>
+            <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+      ORDER by hfz_user_task_record.complete_time desc
+
+    </select>
+</mapper>

@@ -1,0 +1,47 @@
+<title>
+    编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+   <!-- <script type="text/html" template lay-url="{{layui.setter.apiUrl}}/hfz/goodsType/goodsTypeList" lay-done="layui.data.done(d);">
+        <div class="layui-form-item">
+            <label class="layui-form-label" >父级名称</label>
+            <div class="layui-input-block">
+                <select name="parentId" lay-search >
+                    <option value="">顶级类型</option>
+                    {{# layui.each(d.data, function(index, item){ }}
+                    <option value="{{item.id}}" {{item.id==d.params.parentId? 'selected': ''}}>{{item.name}}</option>
+                    {{# }); }}
+                </select>
+            </div>
+        </div>
+
+    </script>-->
+    <script type="text/html" template>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" value="{{d.params.name ||''}}" class="layui-input"
+                       placeholder="输入类型名称">
+            </div>
+        </div>
+
+    </script>
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="LAY-goodsType-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+
+
+
+
+
+        });
+    };
+</script>

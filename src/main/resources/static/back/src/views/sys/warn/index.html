@@ -1,0 +1,73 @@
+<title>问题反馈</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>系统管理</cite>
+		</a>
+		<a>
+			<cite>警告信息</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-form-select .layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+</style>
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<div class="layui-form" style="padding-bottom: 15px;">
+			<div class="layui-row">
+				<p class="xxx" style="display: none;">...</p>
+				<div class="layui-col-md9">
+					<script type="text/html" template lay-url="{{layui.setter.apiUrl}}/hfz/use/userList" lay-done="layui.data.done(d);">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="margin-top: 5px;">用户名</label>
+							<div class="layui-input-inline">
+								<select name="userId" lay-search >
+									<option value="">全部</option>
+									{{# layui.each(d.data, function(index, item){ }}
+									<option value="{{item.id}}">{{item.nickName}}</option>
+									{{# }); }}
+								</select>
+							</div>
+						</div>
+
+					</script>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="margin-top: 5px;">处理状态</label>
+						<div class="layui-input-inline">
+							<select name="handleStatus" >
+								<option value="">全部</option>
+								<option value="1">未处理</option>
+								<option value="2">拉黑</option>
+								<option value="3">警告</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="layui-inline" style="padding-top: 5;">
+						<button class="layui-btn layuiadmin-btn-list" style="margin-top: 5px;" lay-submit lay-filter="LAY-warn-search">
+							搜索
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<table id="LAY-warn-list" lay-filter="LAY-warn-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('warn', layui.factory('warn'));
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render();
+        });
+    };
+</script>

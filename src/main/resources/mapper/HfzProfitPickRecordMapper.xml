@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzProfitPickRecordMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzProfitPickRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="amount" jdbcType="VARCHAR" property="amount" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="verify_status" jdbcType="INTEGER" property="verifyStatus" />
+    <result column="pay_status" jdbcType="INTEGER" property="payStatus" />
+    <result column="operate_time" jdbcType="TIMESTAMP" property="operateTime" />
+    <result column="msg" jdbcType="VARCHAR" property="msg" />
+    <result column="results" jdbcType="VARCHAR" property="results" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzProfitPickRecord">
+    INSERT INTO hfz_profit_pick_record(id
+    <trim prefix="   ">
+      <if test="userId != null"> , user_id</if>
+      <if test="amount != null"> , amount</if>
+      <if test="applyTime != null"> , apply_time</if>
+      <if test="verifyStatus != null"> , verify_status</if>
+      <if test="payStatus != null"> , pay_status</if>
+      <if test="operateTime != null"> , operate_time</if>
+      <if test="msg != null"> , msg</if>
+      <if test="delStatus != null"> , del_status</if>
+      <if test="results != null"> , results</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="userId != null">, #{userId} </if>
+      <if test="amount != null">, #{amount} </if>
+      <if test="applyTime != null">, #{applyTime} </if>
+      <if test="verifyStatus != null">, #{verifyStatus} </if>
+      <if test="payStatus != null">, #{payStatus} </if>
+      <if test="operateTime != null">, #{operateTime} </if>
+      <if test="msg != null">, #{msg} </if>
+      <if test="delStatus != null">, #{delStatus} </if>
+      <if test="results != null">, #{results} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzProfitPickRecord" resultMap="BaseResultMap">
+    SELECT * FROM hfz_profit_pick_record
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="userId != null"> AND user_id = #{userId} </if>
+      <if test="amount != null"> AND amount = #{amount} </if>
+      <if test="applyTime != null"> AND apply_time = #{applyTime} </if>
+      <if test="verifyStatus != null"> AND verify_status = #{verifyStatus} </if>
+      <if test="payStatus != null"> AND pay_status = #{payStatus} </if>
+      <if test="operateTime != null"> AND operate_time = #{operateTime} </if>
+      <if test="msg != null"> AND msg = #{msg} </if>
+      <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+      <if test="results != null"> AND results = #{results} </if>
+    </trim>
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzProfitPickRecord">
+    UPDATE hfz_profit_pick_record
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="userId != null"> , user_id = #{userId}</if>
+      <if test="amount != null"> , amount = #{amount}</if>
+      <if test="applyTime != null"> , apply_time = #{applyTime}</if>
+      <if test="verifyStatus != null"> , verify_status = #{verifyStatus}</if>
+      <if test="payStatus != null"> , pay_status = #{payStatus}</if>
+      <if test="operateTime != null"> , operate_time = #{operateTime}</if>
+      <if test="msg != null"> , msg = #{msg}</if>
+      <if test="delStatus != null"> , del_status = #{delStatus}</if>
+      <if test="results != null"> , results = #{results}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_profit_pick_record SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <!-- 关联用户表  -->
+  <select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzUserBalance" resultMap="BaseResultMap">
+    SELECT hfz_profit_pick_record.*,hfz_user.nick_name userName,hfz_user.phone userPhone
+    FROM hfz_profit_pick_record
+    LEFT JOIN hfz_user
+    ON hfz_profit_pick_record.user_id=hfz_user.id
+    where hfz_user.user_status=1
+      <if test="userId != null"> AND hfz_profit_pick_record.user_id = #{userId} </if>
+      <if test="amount != null"> AND hfz_profit_pick_record.amount = #{amount} </if>
+      <if test="applyTime != null"> AND hfz_profit_pick_record.apply_time = #{applyTime} </if>
+      <if test="verifyStatus != null"> AND hfz_profit_pick_record.verify_status = #{verifyStatus} </if>
+      <if test="payStatus != null"> AND hfz_profit_pick_record.pay_status = #{payStatus} </if>
+      <if test="operateTime != null"> AND hfz_profit_pick_record.operate_time = #{operateTime} </if>
+      <if test="msg != null"> AND hfz_profit_pick_record.msg = #{msg} </if>
+      <if test="delStatus != null"> AND hfz_profit_pick_record.del_status = #{delStatus} </if>
+      <if test="results != null"> AND hfz_profit_pick_record.results = #{results} </if>
+      <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+
+    order by hfz_profit_pick_record.id desc
+  </select>
+
+  <select id="selectCount" parameterType="com.hoostec.hfz.entity.HfzProfitPickRecord" resultType="int">
+      SELECT COUNT(1) FROM hfz_profit_pick_record
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="userId != null"> AND user_id = #{userId} </if>
+      <if test="amount != null"> AND amount = #{amount} </if>
+      <if test="applyTime != null"> AND apply_time = #{applyTime} </if>
+      <if test="verifyStatus != null"> AND verify_status = #{verifyStatus} </if>
+      <if test="payStatus != null"> AND pay_status = #{payStatus} </if>
+      <if test="operateTime != null"> AND operate_time = #{operateTime} </if>
+      <if test="msg != null"> AND msg = #{msg} </if>
+      <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+      <if test="results != null"> AND results = #{results} </if>
+    </trim>
+  </select>
+
+  <select id="selectDayPay" parameterType="com.hoostec.hfz.entity.HfzProfitPickRecord" resultType="int">
+    SELECT  IFNULL(sum(amount),0) FROM hfz_profit_pick_record
+where verify_status=2 and  DATE_FORMAT(operate_time, '%Y-%m-%d') =date_sub(curdate(),interval 1 day)
+  </select>
+</mapper>

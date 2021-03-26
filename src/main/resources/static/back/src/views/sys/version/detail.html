@@ -1,0 +1,48 @@
+<title>
+    编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+
+    <script type="text/html" template>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">版本</label>
+            <div class="layui-input-block">
+                <input type="text" name="version" value="{{d.params.version ||''}}" class="layui-input"
+                       placeholder="版本">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">更改内容</label>
+            <div class="layui-input-block">
+                <input type="text" name="content" value="{{d.params.content ||''}}" class="layui-input"
+                       placeholder="更改内容">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">下载地址</label>
+            <div class="layui-input-inline">
+                <input type="text" name="url" id="LAY_avatarSrc" value="{{d.params.url ||''}}" class="layui-input"
+                       placeholder="下载地址">
+            </div>
+            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                    <i class="layui-icon">&#xe67c;</i>上传安装包
+                </button>
+            </div>
+        </div>
+
+    </script>
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="LAY-version-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+        });
+    };
+</script>

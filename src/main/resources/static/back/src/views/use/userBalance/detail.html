@@ -1,0 +1,37 @@
+<title>
+    编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+
+    <script type="text/html" template>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户积分</label>
+            <div class="layui-input-block">
+                <input type="text" name="integral" value="{{ d.params.integral || ''
+				}}" class="layui-input" lay-verify="number" placeholder="用户积分">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">收益余额</label>
+            <div class="layui-input-block">
+                <input type="text" name="profit" value="{{d.params.profit/100 ||''}}" class="layui-input"
+                       placeholder="收益余额">
+            </div>
+        </div>
+
+    </script>
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal"  lay-submit lay-filter="LAY-balance-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+        });
+    };
+</script>

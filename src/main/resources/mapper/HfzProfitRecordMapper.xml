@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzProfitRecordMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzProfitRecord">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="amount" jdbcType="VARCHAR" property="amount" />
+    <result column="get_time" jdbcType="VARCHAR" property="getTime" />
+    <result column="get_way" jdbcType="INTEGER" property="getWay" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+
+      <result column="applyTime" jdbcType="VARCHAR" property="applyTime" />
+      <result column="msg" jdbcType="VARCHAR" property="msg" />
+      <result column="type" jdbcType="VARCHAR" property="type" />
+      <result column="status" jdbcType="VARCHAR" property="status" />
+
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzProfitRecord">
+    INSERT INTO hfz_profit_record(id
+    <trim prefix="   ">
+      <if test="userId != null"> , user_id</if>
+      <if test="amount != null"> , amount</if>
+      <if test="getTime != null"> , get_time</if>
+      <if test="getWay != null"> , get_way</if>
+      <if test="delStatus != null"> , del_status</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="userId != null">, #{userId} </if>
+      <if test="amount != null">, #{amount} </if>
+      <if test="getTime != null">, #{getTime} </if>
+      <if test="getWay != null">, #{getWay} </if>
+      <if test="delStatus != null">, #{delStatus} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+
+  <select id="selectProfitRecord" parameterType="com.hoostec.hfz.entity.HfzProfitRecord" resultMap="BaseResultMap">
+    SELECT * FROM (
+        SELECT
+           amount/100 as amount,
+            apply_time AS applyTime,
+            "提现" AS msg,
+            2 AS type,
+            pay_status AS status
+        FROM
+            hfz_profit_pick_record
+        WHERE
+            user_id = #{userId}
+        UNION ALL
+            SELECT
+                amount/100 as amount,
+                get_time AS applyTime,
+                (
+                    CASE get_way
+                    WHEN 1 THEN
+                        '抽奖'
+                    WHEN 2 THEN
+                        '收益'
+                    ELSE
+                        '签到'
+                    END
+                ) AS msg,
+                1 AS type,
+                2 AS status
+            FROM
+                hfz_profit_record
+            WHERE
+                user_id = #{userId}
+    ) t
+    ORDER BY t.applyTime DESC
+</select>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzProfitRecord" resultMap="BaseResultMap">
+    SELECT * FROM hfz_profit_record
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="userId != null"> AND user_id = #{userId} </if>
+      <if test="amount != null"> AND amount = #{amount} </if>
+      <if test="getTime != null"> AND get_time = #{getTime} </if>
+      <if test="getWay != null"> AND get_way = #{getWay} </if>
+      <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+    </trim>
+    ORDER BY id DESC
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzProfitRecord">
+    UPDATE hfz_profit_record
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="userId != null"> , user_id = #{userId}</if>
+      <if test="amount != null"> , amount = #{amount}</if>
+      <if test="getTime != null"> , get_time = #{getTime}</if>
+      <if test="getWay != null"> , get_way = #{getWay}</if>
+      <if test="delStatus != null"> , del_status = #{delStatus}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_profit_record SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+
+  <!-- 关联用户表  -->
+  <select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzUserBalance" resultMap="BaseResultMap">
+      SELECT hfz_profit_record.*,hfz_user.nick_name userName,hfz_user.phone userPhone
+      FROM hfz_profit_record
+      LEFT JOIN hfz_user
+      ON hfz_profit_record.user_id=hfz_user.id
+      where hfz_user.user_status=1
+
+      <if test="id != null"> AND hfz_profit_record.id = #{id} </if>
+      <if test="userId != null"> AND hfz_profit_record.user_id = #{userId} </if>
+      <if test="amount != null"> AND hfz_profit_record.amount = #{amount} </if>
+      <if test="getTime != null"> AND hfz_profit_record.get_time = #{getTime} </if>
+      <if test="getWay != null"> AND hfz_profit_record.get_way = #{getWay} </if>
+      <if test="delStatus != null"> AND hfz_profit_record.del_status = #{delStatus} </if>
+        <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+
+      order by id desc
+  </select>
+
+
+
+
+    <!-- 去重 排序 求和  -->
+    <select id="selectAllGroupSort" parameterType="com.hoostec.hfz.entity.HfzUserBalance" resultMap="BaseResultMap">
+        select  user_id,sum(amount) amount ,hfz_user.nick_name userName   from hfz_profit_record
+        LEFT JOIN hfz_user
+        ON hfz_profit_record.user_id=hfz_user.id
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null"> AND hfz_profit_record.id = #{id} </if>
+            <if test="userId != null"> AND hfz_profit_record.user_id = #{userId} </if>
+            <if test="amount != null"> AND hfz_profit_record.amount = #{amount} </if>
+            <if test="getTime != null"> AND DATE_FORMAT(hfz_profit_record.get_time, '%Y-%m-%d') = DATE_FORMAT(CURRENT_TIME (),'%Y-%m-%d')</if>
+            <if test="getWay != null"> AND hfz_profit_record.get_way = #{getWay} </if>
+            <if test="delStatus != null"> AND hfz_profit_record.del_status = #{delStatus} </if>
+        </trim>
+        group by hfz_profit_record.user_id
+        ORDER BY hfz_profit_record.amount desc
+    </select>
+
+
+</mapper>

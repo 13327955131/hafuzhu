@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzCardTypeMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzCardType">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="code" jdbcType="VARCHAR" property="code"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+    </resultMap>
+    <!-- 添加  -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzCardType">
+        INSERT INTO hfz_card_type(id
+        <trim prefix="   ">
+            <if test="name != null">, name</if>
+            <if test="img != null">, img</if>
+            <if test="code != null">, code</if>
+            <if test="delStatus != null">, del_status</if>
+            <if test="type != null">, type</if>
+            <if test="remark != null">, remark</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="name != null">, #{name}</if>
+            <if test="img != null">, #{img}</if>
+            <if test="code != null">, #{code}</if>
+            <if test="delStatus != null">, #{delStatus}</if>
+            <if test="type != null">, #{type}</if>
+            <if test="remark != null">, #{remark}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzCardType" resultMap="BaseResultMap">
+        SELECT * FROM hfz_card_type
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="name != null">AND name = #{name}</if>
+            <if test="img != null">AND img = #{img}</if>
+            <if test="code != null">AND code = #{code}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+            <if test="type != null">AND type = #{type}</if>
+            <if test="remark != null">AND remark = #{remark}</if>
+        </trim>
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzCardType">
+        UPDATE hfz_card_type
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="name != null">, name = #{name}</if>
+            <if test="img != null">, img = #{img}</if>
+            <if test="code != null">, code = #{code}</if>
+            <if test="delStatus != null">, del_status = #{delStatus}</if>
+            <if test="type != null">, type = #{type}</if>
+            <if test="remark != null">, remark = #{remark}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+    <!-- 批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE hfz_card_type SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

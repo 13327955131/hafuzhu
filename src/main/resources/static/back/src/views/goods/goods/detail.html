@@ -1,0 +1,122 @@
+<title>
+    编辑/新增 权限
+</title>
+<style>
+    .imgUp{
+        width: 100px;height: 100px;margin-left:5px;
+        margin-top: 5px;
+    }
+    .styleFloat{
+        width: 100% !important;
+    }
+    .styleFloat img{
+        float: left;
+    }
+    .close {
+        position: absolute;
+        right: 32px;
+        top: 32px;
+        width: 32px;
+        height: 32px;
+    }
+
+</style>
+<div class="layui-form layui-form-pane">
+
+
+    <script type="text/html" template lay-url="{{layui.setter.apiUrl}}/hfz/goodsType/goodsTypeList" lay-done="layui.data.done(d);">
+        <div class="layui-form-item">
+            <label class="layui-form-label" >商品类型</label>
+            <div class="layui-input-block">
+                <select id="typeId" name="typeId" lay-search  lay-filter="typeId">
+                    {{# layui.each(d.data, function(index, item){ }}
+                        {{# if(item.id!=d.params.FKStatus){}}
+                            <option value="{{item.id}}" {{item.id==d.params.typeId? 'selected': ''}}>{{item.name}}</option>
+                    {{# } }); }}
+                </select>
+            </div>
+        </div>
+
+    </script>
+    <script type="text/html" template>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-block putongC">
+                <input type="text" name="name" id="goodsNameId" value="{{d.params.name ||''}}" class="layui-input content1"
+                       placeholder="输入商品名称">
+            </div>
+            <div class="layui-input-block selectC" style="display: none">
+                <select id="contentId" lay-search="" lay-filter="contentId" class="content content2" name="name">
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">积分数量</label>
+            <div class="layui-input-block">
+                <input type="text" name="integralNum" value="{{d.params.integralNum ||''}}" class="layui-input" lay-verify="number"
+                       placeholder="积分兑换数量">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">剩余数量</label>
+            <div class="layui-input-block">
+                <input type="text" name="num" value="{{d.params.num ||''}}" class="layui-input" lay-verify="number"
+                       placeholder="商品剩余数量">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品主图</label>
+            <div class="layui-input-inline">
+                <input name="img" id="LAY_avatarSrc" placeholder="图片地址" value="{{ d.params.img || '' }}" class="layui-input">
+            </div>
+            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+                <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">轮播图</label>
+            <div class="layui-input-inline swiperParent styleFloat">
+                {{# layui.each(d.params.swiper, function(index, item){ }}
+                <div style="position:relative;overflow: hidden;width: 100px;float: left;margin-top: 10px">
+                    <img class="imgUp2" style="width: 100px;height: 100px;margin-left: 2px"  src="{{item}}">
+                    <img class="cha" style="position:absolute;right:1px;top: 1px;width: 15px; " src="src/style/res/cha.png">
+                </div>
+
+                {{# }); }}
+
+                    <img class="imgUp" id="LAY_swiper" src="src/style/res/imgAdd.png">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品内容</label>
+            <div class="layui-input-inline contentParent styleFloat">
+                {{# layui.each(d.params.content, function(index, item){ }}
+                <div style="position:relative;overflow: hidden;width: 100px;float: left;margin-top: 10px">
+                    <img class="imgUp3" style="width: 100px;height: 100px;margin-left: 2px"  src="{{item}}">
+                    <img class="cha" style="position:absolute;right:1px;top: 1px;width: 15px; " src="src/style/res/cha.png">
+                </div>
+                {{# }); }}
+                <img class="imgUp" id="LAY_content" src="src/style/res/imgAdd.png">
+            </div>
+        </div>
+
+    </script>
+
+    <input type="text" name="cardId" id="cardIdDis" value="0" style="display: none"
+          >
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="LAY-goods-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+
+        });
+    };
+</script>

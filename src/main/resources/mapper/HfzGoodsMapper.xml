@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzGoodsMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzGoods">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="integral_num" jdbcType="INTEGER" property="integralNum"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+        <result column="type_id" jdbcType="INTEGER" property="typeId"/>
+        <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+        <result column="img" jdbcType="LONGVARCHAR" property="img"/>
+        <result column="swiper" jdbcType="LONGVARCHAR" property="swiper"/>
+        <result column="card_id" jdbcType="INTEGER" property="cardId"/>
+    </resultMap>
+    <!-- 添加  -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzGoods">
+        INSERT INTO hfz_goods(id
+        <trim prefix="   ">
+            <if test="name != null">, name</if>
+            <if test="integralNum != null">, integral_num</if>
+            <if test="num != null">, num</if>
+            <if test="typeId != null">, type_id</if>
+            <if test="delStatus != null">, del_status</if>
+            <if test="content != null">, content</if>
+            <if test="img != null">, img</if>
+            <if test="swiper != null">, swiper</if>
+            <if test="cardId != null">, card_id</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="name != null">, #{name}</if>
+            <if test="integralNum != null">, #{integralNum}</if>
+            <if test="num != null">, #{num}</if>
+            <if test="typeId != null">, #{typeId}</if>
+            <if test="delStatus != null">, #{delStatus}</if>
+            <if test="content != null">, #{content}</if>
+            <if test="img != null">, #{img}</if>
+            <if test="swiper != null">, #{swiper}</if>
+            <if test="cardId != null">, #{cardId}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzGoods" resultMap="BaseResultMap">
+        SELECT * FROM hfz_goods
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="name != null">AND name = #{name}</if>
+            <if test="integralNum != null">AND integral_num = #{integralNum}</if>
+            <if test="num != null">AND num = #{num}</if>
+            <if test="typeId != null">AND type_id = #{typeId}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+            <if test="content != null">AND content = #{content}</if>
+            <if test="img != null">AND img = #{img}</if>
+            <if test="swiper != null">AND swiper = #{swiper}</if>
+            <if test="cardId != null">AND card_id = #{cardId}</if>
+        </trim>
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzGoods">
+        UPDATE hfz_goods
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="name != null">, name = #{name}</if>
+            <if test="integralNum != null">, integral_num = #{integralNum}</if>
+            <if test="num != null">, num = #{num}</if>
+            <if test="typeId != null">, type_id = #{typeId}</if>
+            <if test="delStatus != null">, del_status = #{delStatus}</if>
+            <if test="content != null">, content = #{content}</if>
+            <if test="img != null">, img = #{img}</if>
+            <if test="swiper != null">, swiper = #{swiper}</if>
+            <if test="cardId != null">, card_id = #{cardId}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+    <!-- 批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE hfz_goods SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+    <select id="selectAllType" parameterType="com.hoostec.hfz.entity.HfzGoods" resultMap="BaseResultMap">
+        SELECT hfz_goods.*,hfz_goods_type.name typeName
+        FROM hfz_goods_type
+        LEFT JOIN hfz_goods
+        ON hfz_goods.type_id=hfz_goods_type.id
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND hfz_goods.id = #{id}</if>
+            <if test="name != null">AND concat(hfz_goods.name)  like '%${name}%' </if>
+            <if test="integralNum != null">AND hfz_goods.integral_num = #{integralNum}</if>
+            <if test="num != null">AND hfz_goods.num = #{num}</if>
+            <if test="typeId != null">AND hfz_goods.type_id = #{typeId}</if>
+            <if test="delStatus != null">AND hfz_goods.del_status = #{delStatus}</if>
+            <if test="content != null">AND hfz_goods.content = #{content}</if>
+            <if test="img != null">AND hfz_goods.img = #{img}</if>
+            <if test="swiper != null">AND hfz_goods.swiper = #{swiper}</if>
+            <if test="cardId != null">AND hfz_goods.card_id = #{cardId}</if>
+        </trim>
+    </select>
+
+
+
+</mapper>

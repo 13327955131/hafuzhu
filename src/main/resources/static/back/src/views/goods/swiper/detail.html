@@ -1,0 +1,57 @@
+<title>
+    编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+
+    <script type="text/html" template>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" value="{{ d.params.title || '' }}"
+                       autocomplete="off" placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">内容</label>
+            <div class="layui-input-block">
+                <input type="text" name="content" value="{{ d.params.content || '' }}"
+                       autocomplete="off" placeholder="请输入简单介绍" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">跳转地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="url" value="{{ d.params.url || '' }}"
+                       autocomplete="off" placeholder="请输入跳转地址" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">图片</label>
+            <div class="layui-input-inline">
+                <input name="img" id="LAY_avatarSrc" placeholder="图片地址" value="{{ d.params.img || '' }}" lay-verify="required"
+                       class="layui-input">
+            </div>
+            <div class="layui-input-inline layui-btn-container" style="width: auto;">
+                <button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+                    <i class="layui-icon">&#xe67c;</i>上传图片
+                </button>
+                <button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
+            </div>
+        </div>
+
+
+    </script>
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="LAY-swiper-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+        });
+    };
+</script>

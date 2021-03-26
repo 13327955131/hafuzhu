@@ -1,0 +1,82 @@
+<title>
+	编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+	<div class="layui-form-item">
+		<label class="layui-form-label">角色</label>
+		<div class="layui-input-block">
+			<script type="text/html" template lay-url="{{ layui.setter.apiUrl }}/cms/role/list" lay-done="layui.data.done(d);">
+				<select name="roleId">
+					{{# layui.each(d.data, function(index, item){ }}
+					<option value="{{item.id}}" {{item.id==d.params.roleId? 'selected': ''}}>{{item.name}}</option>
+					{{# }); }}
+				</select>
+			</script>
+		</div>
+	</div>
+	
+	<script type="text/html" template>
+		<div class="layui-form-item">
+			<label class="layui-form-label">昵称</label>
+			<div class="layui-input-block">
+				<input type="text" name="nickName" value="{{ d.params.nickName || '' }}" lay-verify="required" autocomplete="off" placeholder="请输入姓名" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">头像</label>
+			<div class="layui-input-inline">
+				<input name="headImg" id="LAY_avatarSrc" placeholder="图片地址" value="{{ d.params.headImg || '' }}" class="layui-input">
+			</div>
+			<div class="layui-input-inline layui-btn-container" style="width: auto;">
+				<button type="button" class="layui-btn layui-btn-primary" id="LAY_avatarUpload">
+					<i class="layui-icon">&#xe67c;</i>上传图片
+				</button>
+				<button class="layui-btn layui-btn-primary" layadmin-event="avartatPreview">查看图片</button>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">邮箱</label>
+			<div class="layui-input-block">
+				<input type="text" name="email" value="{{ d.params.email || '' }}" placeholder="请输入邮箱" autocomplete="off" maxlength="15" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">域名</label>
+			<div class="layui-input-block">
+				<input type="text" name="domain" value="{{ d.params.domain || '' }}" placeholder="请输入域名" autocomplete="off" maxlength="15" class="layui-input">
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">备注</label>
+			<div class="layui-input-block">
+				<textarea name="remark" class="layui-textarea"  placeholder="请输入备注"  class="layui-input">{{ d.params.remark || '' }}</textarea>
+			</div>
+		</div>
+		<div class="layui-form-item">
+			<label class="layui-form-label">账号</label>
+			<div class="layui-input-block">
+				<input type="text" name="username" {{d.params.username? 'readonly': ''}} value="{{ d.params.username || ''
+				}}" class="layui-input" lay-verify="required" placeholder="请输入用户名">
+			</div>
+		</div>
+		<div class="layui-form-item" id="admin-password">
+			<label class="layui-form-label">密码</label>
+			<div class="layui-input-block">
+				<input type="text" name="password" value="{{d.params.password? '': '123456'}}" class="layui-input" placeholder="请输入密码">
+			</div>
+		</div>
+	</script>
+
+	<div class="layui-form-item" align="center" style="margin-top: 35px;">
+		<button class="layui-btn layui-btn-normal" permission="admin:update" lay-submit lay-filter="LAY-admin-submit">确认提交</button>
+	</div>
+</div>
+<script>
+	layui.data.done = function(d) {
+		layui.use(['form'], function() {
+			var form = layui.form;
+			form.render(); //渲染该模板下的动态表单
+		});
+	};
+</script>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzConfigAliMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzConfigAli">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="access_key_id" jdbcType="VARCHAR" property="accessKeyId"/>
+        <result column="access_key_secret" jdbcType="VARCHAR" property="accessKeySecret"/>
+        <result column="endpoint" jdbcType="VARCHAR" property="endpoint"/>
+        <result column="domain" jdbcType="VARCHAR" property="domain"/>
+        <result column="appcode" jdbcType="VARCHAR" property="appcode"/>
+    </resultMap>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectOne" parameterType="com.hoostec.hfz.entity.HfzConfigAli" resultMap="BaseResultMap">
+        SELECT * FROM hfz_config_ali limit 1
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzConfigAli">
+        UPDATE hfz_config_ali
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="accessKeyId != null">, access_key_id = #{accessKeyId}</if>
+            <if test="accessKeySecret != null">, access_key_secret = #{accessKeySecret}</if>
+            <if test="endpoint != null">, endpoint = #{endpoint}</if>
+            <if test="domain != null">, domain = #{domain}</if>
+            <if test="appcode != null">, appcode = #{appcode}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+
+</mapper>

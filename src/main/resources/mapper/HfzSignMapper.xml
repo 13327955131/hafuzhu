@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzSignMapper">
+  <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzSign">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="continue_sign_month" jdbcType="INTEGER" property="continueSignMonth" />
+    <result column="sign_month" jdbcType="VARCHAR" property="signMonth" />
+    <result column="last_sign_time" jdbcType="VARCHAR" property="lastSignTime" />
+    <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+    <result column="integral_receive" jdbcType="INTEGER" property="integralReceive" />
+    <result column="draw_receive" jdbcType="INTEGER" property="drawReceive" />
+    <result column="red_packet_receive" jdbcType="INTEGER" property="redPacketReceive" />
+  </resultMap>
+  <!-- 添加  -->
+  <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzSign">
+    INSERT INTO hfz_sign(id
+    <trim prefix="   ">
+      <if test="userId != null"> , user_id</if>
+      <if test="continueSignMonth != null"> , continue_sign_month</if>
+      <if test="signMonth != null"> , sign_month</if>
+      <if test="lastSignTime != null"> , last_sign_time</if>
+      <if test="delStatus != null"> , del_status</if>
+      <if test="integralReceive != null"> , integral_receive</if>
+      <if test="drawReceive != null"> , draw_receive</if>
+      <if test="redPacketReceive != null"> , red_packet_receive</if>
+    </trim>
+    )
+    VALUES(default
+    <trim prefix="   ">
+      <if test="userId != null">, #{userId} </if>
+      <if test="continueSignMonth != null">, #{continueSignMonth} </if>
+      <if test="signMonth != null">, #{signMonth} </if>
+      <if test="lastSignTime != null">, #{lastSignTime} </if>
+      <if test="delStatus != null">, #{delStatus} </if>
+      <if test="integralReceive != null">, #{integral_receive} </if>
+      <if test="drawReceive != null">, #{draw_receive} </if>
+      <if test="redPacketReceive != null">, #{red_packet_receive} </if>
+    </trim>
+    )
+    <selectKey keyProperty="id" resultType="Integer">
+      SELECT @@IDENTITY AS ID
+    </selectKey>
+  </insert>
+  <!-- 查询满足条件的全部记录  -->
+  <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzSign" resultMap="BaseResultMap">
+    SELECT * FROM hfz_sign
+    <trim prefix=" WHERE " prefixOverrides="AND">
+      <if test="id != null"> AND id = #{id} </if>
+      <if test="userId != null"> AND user_id = #{userId} </if>
+      <if test="continueSignMonth != null"> AND continue_sign_month = #{continueSignMonth} </if>
+      <if test="signMonth != null"> AND sign_month = #{signMonth} </if>
+      <if test="lastSignTime != null"> AND last_sign_time = #{lastSignTime} </if>
+      <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+      <if test="integralReceive != null"> AND integral_receive = #{integralReceive} </if>
+      <if test="drawReceive != null"> AND draw_receive = #{drawReceive} </if>
+      <if test="redPacketReceive != null"> AND red_packet_receive = #{redPacketReceive} </if>
+    </trim>
+  </select>
+  <!-- 修改 -->
+  <update id="update" parameterType="com.hoostec.hfz.entity.HfzSign">
+    UPDATE hfz_sign
+    <trim prefix=" SET  " prefixOverrides=",">
+      <if test="userId != null"> , user_id = #{userId}</if>
+      <if test="continueSignMonth != null"> , continue_sign_month = #{continueSignMonth}</if>
+      <if test="signMonth != null"> , sign_month = #{signMonth}</if>
+      <if test="lastSignTime != null"> , last_sign_time = #{lastSignTime}</if>
+      <if test="delStatus != null"> , del_status = #{delStatus}</if>
+      <if test="integralReceive != null"> , integral_receive = #{integralReceive}</if>
+      <if test="drawReceive != null"> , draw_receive = #{drawReceive}</if>
+      <if test="redPacketReceive != null"> , red_packet_receive = #{redPacketReceive}</if>
+    </trim>
+    <trim prefix=" WHERE  " prefixOverrides="">
+      <if test="id != 0"> id = #{id}</if>
+    </trim>
+  </update>
+  <!-- 批量删除-->
+  <delete id="deleteAll" parameterType="java.util.List">
+    UPDATE hfz_sign SET del_status=-1 WHERE id IN
+    <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <!-- 查询满足条件的全部记录 关联查询  -->
+  <select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzSign" resultMap="BaseResultMap">
+    SELECT hfz_sign.* , hfz_user.nick_name userName,hfz_user.phone userPhone FROM hfz_sign left join hfz_user on  hfz_sign.user_id=hfz_user.id
+    where hfz_user.user_status=1
+
+      <if test="id != null"> AND hfz_sign.id = #{id} </if>
+      <if test="userId != null"> AND hfz_sign.user_id = #{userId} </if>
+      <if test="continueSignMonth != null"> AND hfz_sign.continue_sign_month = #{continueSignMonth} </if>
+      <if test="signMonth != null"> AND hfz_sign.sign_month = #{signMonth} </if>
+      <if test="lastSignTime != null"> AND hfz_sign.last_sign_time = #{lastSignTime} </if>
+      <if test="delStatus != null"> AND hfz_sign.del_status = #{delStatus} </if>
+      <if test="integralReceive != null"> AND hfz_sign.integral_receive = #{integralReceive} </if>
+      <if test="drawReceive != null"> AND hfz_sign.draw_receive = #{drawReceive} </if>
+      <if test="redPacketReceive != null"> AND hfz_sign.red_packet_receive = #{redPacketReceive} </if>
+      <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+
+    order by hfz_sign.id desc
+  </select>
+
+
+
+</mapper>

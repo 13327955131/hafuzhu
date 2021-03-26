@@ -1,0 +1,63 @@
+<title>菜单管理</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>用户管理</cite>
+		</a>
+		<a>
+			<cite>收益记录</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-form-select .layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+</style>
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<div class="layui-form" style="padding-bottom: 15px;">
+			<div class="layui-row">
+				<p class="xxx" style="display: none;">...</p>
+				<div class="layui-col-md9">
+					<script type="text/html" template lay-url="{{layui.setter.apiUrl}}/hfz/use/userList" lay-done="layui.data.done(d);">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="margin-top: 5px;">用户名</label>
+							<div class="layui-input-inline">
+								<select name="userId" lay-search >
+									<option value="">请选择</option>
+									{{# layui.each(d.data, function(index, item){ }}
+									<option value="{{item.id}}">{{item.nickName}}</option>
+									{{# }); }}
+								</select>
+							</div>
+						</div>
+
+					</script>
+
+					<div class="layui-inline" style="padding-top: 5;">
+						<button class="layui-btn layuiadmin-btn-list" style="margin-top: 5px;" lay-submit lay-filter="LAY-userAddress-search">
+							搜索
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<table id="LAY-userAddress-list" lay-filter="LAY-userAddress-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('userAddress', layui.factory('userAddress'));
+
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render();
+        });
+    };
+</script>

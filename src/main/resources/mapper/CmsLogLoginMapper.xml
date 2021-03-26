@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.CmsLogLoginMapper">
+	<resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.CmsLogLogin">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="user_id" jdbcType="INTEGER" property="userId" />
+		<result column="ip" jdbcType="VARCHAR" property="ip" />
+		<result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="username" jdbcType="VARCHAR" property="username" />
+		<result column="type" jdbcType="VARCHAR" property="type" />
+	</resultMap>
+
+
+	<sql id="BaseColum">
+		id , user_id, ip, create_time, username, type
+	</sql>
+	<!-- 添加 -->
+	<insert id="insert" parameterType="com.hoostec.hfz.entity.CmsLogLogin">
+		INSERT INTO cms_log_login(id
+		<trim prefix="   ">
+			<if test="userId != null"> , user_id</if>
+			<if test="ip != null"> , ip</if>
+			<if test="createTime != null"> , create_time</if>
+			<if test="username != null"> , username</if>
+			<if test="type != null"> , type</if>
+		</trim>
+		)
+		VALUES(default
+		<trim prefix="   ">
+			<if test="userId != null">, #{userId} </if>
+			<if test="ip != null">, #{ip} </if>
+			<if test="createTime != null">, #{createTime} </if>
+			<if test="username != null">, #{username} </if>
+			<if test="type != null">, #{type} </if>
+		</trim>
+		)
+		<selectKey keyProperty="id" resultType="Integer">
+			SELECT @@IDENTITY AS ID
+		</selectKey>
+	</insert>
+	<!-- 查询满足条件的全部记录 -->
+	<select id="selectAll" parameterType="com.hoostec.hfz.entity.CmsLogLogin" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColum" />
+		FROM cms_log_login
+		<trim prefix=" WHERE " prefixOverrides="AND">
+			<if test="id != null"> AND id = #{id} </if>
+			<if test="userId != null"> AND user_id = #{userId} </if>
+			<if test="ip != null"> AND ip = #{ip} </if>
+			<if test="createTime != null"> AND create_time = #{createTime} </if>
+			<if test="username != null"> AND username = #{username} </if>
+			<if test="type != null"> AND type = #{type} </if>
+		</trim>
+		ORDER BY create_time DESC
+	</select>
+</mapper>

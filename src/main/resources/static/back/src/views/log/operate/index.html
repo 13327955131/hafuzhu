@@ -1,0 +1,22 @@
+<title>操作日志</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>日志中心</cite>
+		</a>
+		<a>
+			<cite>操作日志</cite>
+		</a>
+	</div>
+</div>
+
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<table id="LAY-log-handle-list" lay-filter="LAY-log-handle-list"></table>
+	</div>
+</div>
+<script>
+	layui.use('log', layui.factory('log'));
+</script>

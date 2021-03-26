@@ -1,0 +1,24 @@
+<title>
+	编辑/新增 权限
+</title>
+<form class="layui-form layui-form-pane" >
+	<script type="text/html" template>
+		<div class="layui-form-item">
+			<label class="layui-form-label">角色名称</label>
+			<div class="layui-input-block">
+				<input class="layui-input" name="name" value="{{ d.params.name || '' }}">
+			</div>
+		</div>
+	</script>
+	<div class="layui-form-item" pane>
+		<label class="layui-form-label">选择权限</label>
+		<div class="layui-input-block"  style="height: 300px;overflow: auto;padding: 0 15px 15px 10px">
+			<div id="LAY-auth-tree-index"></div>
+		</div>
+	</div>
+	<div class="layui-form-item">
+		<div class="" align="center">
+			<input class="layui-btn" type="button" value="提交" permission="role:update" lay-submit lay-filter="LAY-auth-tree-submit">
+		</div>
+	</div>
+</form>

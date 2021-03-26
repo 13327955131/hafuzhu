@@ -1,0 +1,53 @@
+<title>商城类型</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>商城管理</cite>
+		</a>
+		<a>
+			<cite>商品管理</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-inline .layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+</style>
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<div class="layui-form" style="padding-bottom: 15px;">
+			<div class="layui-row">
+				<p class="xxx" style="display: none;">...</p>
+				<div class="layui-col-md9">
+
+					<div class="layui-inline">
+						<label class="layui-form-label" style="margin-top: 5px;">用户名</label>
+						<div class="layui-input-inline">
+							<input name="name" class="layui-input"  placeholder="商品名称">
+						</div>
+					</div>
+
+
+					<div class="layui-inline">
+						<button class="layui-btn layuiadmin-btn-list" style="margin-top: 5px;" lay-submit lay-filter="LAY-goods-search">
+							搜索
+						</button>
+					</div>
+				</div>
+
+
+			</div>
+
+		</div>
+		<table id="LAY-goods-list" lay-filter="LAY-goods-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('goods', layui.factory('goods'));
+
+</script>

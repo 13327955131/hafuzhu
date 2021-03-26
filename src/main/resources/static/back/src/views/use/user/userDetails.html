@@ -1,0 +1,43 @@
+<title>
+    查看用户信息
+</title>
+
+<div class="layui-tab layui-tab-card">
+    <ul class="layui-tab-title">
+        <li class="layui-this">个人金库</li>
+        <li>收益记录</li>
+        <li>积分明细</li>
+        <li>福卡记录</li>
+        <li>抽奖记录</li>
+        <li>全部徒弟</li>
+        <li>收获地址</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <table id="LAY-userBalance-list" lay-filter="LAY-userBalance-list"></table>
+        </div>
+        <div class="layui-tab-item">
+            <table id="LAY-userProfitRecord-list" lay-filter="LAY-userProfitRecord-list"></table>
+        </div>
+        <div class="layui-tab-item">
+            <table id="LAY-userIntegralRecord-list" lay-filter="LAY-userIntegralRecord-list"></table>
+        </div>
+        <div class="layui-tab-item">
+            <table id="LAY-userCardRecord-list" lay-filter="LAY-userCardRecord-list"></table>
+        </div>
+        <div class="layui-tab-item"会员分布图>
+            <table id="LAY-luckDrawRecord-list" lay-filter="LAY-luckDrawRecord-list"></table>
+        </div>
+        <div class="layui-tab-item">
+            <table id="LAY-userT-list" lay-filter="LAY-userT-list"></table>
+        </div>
+        <div class="layui-tab-item">
+            <table id="LAY-address-list" lay-filter="LAY-address-list"></table>
+        </div>
+        <div class="layui-tab-item"> </div>
+    </div>
+</div>
+
+<script>
+    layui.use('userDetails', layui.factory('userDetails'));
+</script>

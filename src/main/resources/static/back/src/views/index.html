@@ -1,0 +1,222 @@
+<link rel="stylesheet" href="src/style/base.css" media="all">
+<!--顶部-->
+<!--<header class="header left">
+	<div class="left nav">
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<div class="header_center left">
+		<h2><strong>哈福猪大数据展示系统</strong></h2>
+		<p class="color_font"><small>Hafu pig big data display system</small></p>
+	</div>
+	<div class="right nav text_right">
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+
+</header>-->
+
+
+<!--内容部分-->
+<div class="con left">
+	<!--选择时间-->
+	<!--<div class="select_time">
+		<div class="static_top left">
+			<i></i><span>总体概况</span>
+		</div>
+	</div>-->
+	<!--数据总概-->
+	<div class="con_div">
+		<div class="con_div_text left">
+			<div class="con_div_text01 left">
+				<img src="src/style/res/info_1.png" class="left text01_img">
+				<div class="left text01_div">
+					<p>今日新增会员</p>
+					<p id="userThs"></p>
+				</div>
+			</div>
+			<div class="con_div_text01 right">
+				<img src="src/style/res/info_2.png" class="left text01_img">
+				<div class="left text01_div">
+					<p>平台总会员</p>
+					<p id="userAll"></p>
+				</div>
+			</div>
+		</div>
+		<div class="con_div_text left">
+			<div class="con_div_text01 left">
+				<img src="src/style/res/info_4.png" class="left text01_img">
+				<div class="left text01_div">
+					<p>下载数/今日视频任务数</p>
+					<p class="sky" id="taskVideoThs"></p>
+				</div>
+			</div>
+			<div class="con_div_text01 right">
+				<img src="src/style/res/info_5.png" class="left text01_img">
+				<div class="left text01_div">
+					<p>下载数/总视频任务数</p>
+					<p class="sky" id="taskVideoAll"></p>
+				</div>
+			</div>
+		</div>
+		<div class="con_div_text left">
+
+			<div class="con_div_text01 left">
+				<img src="src/style/res/info_6.png" class="left text01_img">
+				<div class="left text01_div">
+					<p>下载数/今日浏览任务数</p>
+					<p class="org" id="taskBrowseThs">1256</p>
+				</div>
+			</div>
+			<div class="con_div_text01 right">
+				<img src="src/style/res/info_7.png" class="left text01_img">
+				<div class="left text01_div">
+					<p>下载数/总浏览任务数</p>
+					<p class="org" id="taskBrowseAll">12356</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--统计分析图-->
+	<div class="div_any">
+		<div class="left div_any01">
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_1.png">财务审核情况</div>
+				<p id="char1" class="p_chart"></p>
+			</div>
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_2.png">财务支出(元)</div>
+				<p id="char2" class="p_chart"></p>
+			</div>
+		</div>
+		<div class="div_any02 left ">
+			<div class="div_any_child div_height">
+				<div class="div_any_title any_title_width"><img src="src/style/res/title_3.png">用户分布图</div>
+				<div id="map_div"></div>
+			</div>
+		</div>
+		<div class="right div_any01">
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_4.png">当日获取福币排名 </div>
+				<div class="table_p">
+					<table>
+						<thead><tr>
+							<th>排名</th>
+							<th>昵称</th>
+							<th>福币数量</th>
+						</tr>
+						</thead>
+						<tbody id="groupSortThs">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_5.png">当日获取收益排名 </div>
+				<div class="table_p">
+					<table>
+						<thead><tr>
+							<th>排名</th>
+							<th>昵称</th>
+							<th>收益金额(元)</th>
+						</tr>
+						</thead>
+						<tbody id="groupSortThsMoney">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--分析表格-->
+	<div class="div_table">
+		<div class="left div_table_box">
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_4.png">总收益收入排名前5位 </div>
+				<div class="table_p">
+					<table>
+						<thead><tr>
+							<th>排名</th>
+							<th>昵称</th>
+							<th>收益金额(元)</th>
+						</tr>
+						</thead>
+						<tbody id="groupSortAllMoney">
+
+						</tbody>
+					</table>
+				</div>
+
+			</div>
+		</div>
+		<div class="left div_table_box">
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_4.png">总福币收入前5位 </div>
+				<div class="table_p">
+					<table>
+						<thead><tr>
+							<th>排名</th>
+							<th>昵称</th>
+							<th>福币数量</th>
+						</tr>
+						</thead>
+						<tbody id="groupSortAll">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="left div_table_box">
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_4.png">收徒排行前5位 </div>
+				<div class="table_p">
+					<table>
+						<thead><tr>
+							<th>排名</th>
+							<th>昵称</th>
+							<th>徒弟人数</th>
+						</tr>
+						</thead>
+						<tbody id="userParent">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="left div_table_box">
+			<div class="div_any_child">
+				<div class="div_any_title"><img src="src/style/res/title_4.png">拥有福卡数量排名前5位 </div>
+				<div class="table_p">
+					<table>
+						<thead><tr>
+							<th>排名</th>
+							<th>车牌号</th>
+							<th>时长（km）</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr><td>1</td><td>京A12345</td><td>134.2</td></tr>
+						<tr><td>1</td><td>京A12345</td><td>134.2</td></tr>
+						<tr><td>1</td><td>京A12345</td><td>134.2</td></tr>
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+        layui.use('senior', layui.factory('senior'));
+</script>

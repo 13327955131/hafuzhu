@@ -1,0 +1,93 @@
+
+<title>设置收益卡</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">系统管理</a> <a><cite>收益卡</cite></a> </a>
+    </div>
+</div>
+<style>
+    .layui-form-label{
+        width: 200px;
+    }
+    .layui-form-item .layui-input-inline{
+        width: 500px;
+    }
+    .layui-input-block{
+        margin-left: 350px;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-header">设置收益卡发放数量</div>
+        <div class="layui-card-body" pad15>
+            <script type="text/html" template lay-url="{{ layui.setter.apiUrl }}/hfz/sys/profitCardOnes" lay-done="layui.data.done(d)">
+                <div class="layui-form" lay-filter="">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">总量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="totalNum" value="{{d.data.totalNum||''}}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">已获得量</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="getNum" value="{{d.data.getNum||''}}"  class="layui-input" readonly>
+                        </div>
+                        <div class="layui-form-mid layui-word-aux"></div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="setmyinfo" style="margin: 0 auto;">确认修改</button>
+                        </div>
+                    </div>
+
+                    <input type="text" name="id" value="{{d.data.id}}"  class="layui-input" style="display: none">
+                </div>
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.data.done = function(d) {
+        layui.use([ 'form', 'set' ], function() {
+            form = layui.form,
+            admin=layui.admin;
+            form.render(); //渲染该模板下的动态表单
+
+
+            //设置我的资料
+            form.on('submit(setmyinfo)', function(obj) {
+
+                //提交修改
+                admin.req({
+                    url: layui.setter.apiUrl + '/hfz/sys/profitCardUpdates',
+                    method: "post",
+                    data: obj.field,
+                    success: function(res) {
+                        if(res.code == 200) {
+                            layer.msg(res.msg, {
+                                offset: '15px',
+                                icon: 1,
+                                time: 1500
+                            }, function() {
+                                admin.events.refresh();
+                            });
+                        }
+
+                    }
+                });
+                return false;
+            });
+
+
+
+
+
+
+
+        });
+    };
+</script>

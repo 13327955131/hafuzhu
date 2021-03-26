@@ -1,0 +1,78 @@
+<title>
+	编辑/新增 菜单
+</title>
+<div class="layui-form layui-form-pane">
+	<script type="text/html" template>
+		<div class="layui-form-item">
+			<label class="layui-form-label">菜单类型</label>
+			<div class="layui-input-block">
+				<select name="type" lay-verify="required">
+					<option value="1" {{ d.params.type== 1 ? "selected":"" }}>操作</option>
+					<option value="2" {{ d.params.type== 2 ? "selected":"" }}>按钮</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">菜单</label>
+			<div class="layui-input-block">
+				<select name="parentId" id="parentMenu" lay-verify="required" lay-search>
+					<option value="0">顶级菜单</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">菜单名称</label>
+			<div class="layui-input-block">
+				<input type="text" name="title" value="{{ d.params.title || '' }}" lay-verify="required"
+				       placeholder="请输入菜单名称" class="layui-input">
+			</div>
+		</div>
+
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">图标样式</label>
+			<div class="layui-input-block">
+				<input type="text" id="iconPicker" name="icon" lay-filter="iconPicker" class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">路由地址</label>
+			<div class="layui-input-block">
+				<input type="text" name="jump" value="{{ d.params.jump || '' }}" placeholder="请输入路由地址"
+				       class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<label class="layui-form-label">权限</label>
+			<div class="layui-input-block">
+				<input type="text" name="route" value="{{ d.params.route || '' }}" placeholder="请输入界面按钮路由地址，用英文逗号隔开"
+				       class="layui-input">
+			</div>
+		</div>
+
+		<div class="layui-form-item">
+			<div class="layui-inline">
+				<label class="layui-form-label">展开状态</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="spread" lay-skin="switch" {{ d.params.spread===1 ?'checked' : '' }}
+					lay-text="开启|关闭">
+				</div>
+			</div>
+			<div class="layui-inline">
+				<label class="layui-form-label">启用状态</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="isUse" lay-skin="switch" {{ d.params.isUse===1 ?'checked' : '' }}
+					lay-text="开启|关闭">
+				</div>
+			</div>
+		</div>
+
+		<div class="layui-form-item" align="center">
+			<input type="button" lay-submit lay-filter="LAY-menu-add" permission="menu:update" value="确认" class="layui-btn">
+		</div>
+	</script>
+</div>

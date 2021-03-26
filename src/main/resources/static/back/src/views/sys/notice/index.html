@@ -1,0 +1,55 @@
+<title>抽奖管理</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>系统管理</cite>
+		</a>
+		<a>
+			<cite>公告通知</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-input {
+		margin-top: 6px!important;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+
+</style>
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<div class="layui-form" style="padding-bottom: 15px;">
+			<div class="layui-row">
+				<p class="xxx" style="display: none;">...</p>
+				<div class="layui-col-md9">
+						<div class="layui-inline">
+							<label class="layui-form-label" style="margin-top: 5px;">公告标题</label>
+							<div class="layui-input-inline">
+								<input type="text" name="title" class="layui-input"
+									   placeholder="输入标题">
+							</div>
+						</div>
+					<div class="layui-inline" style="padding-top: 5;">
+						<button class="layui-btn layuiadmin-btn-list" style="margin-top: 5px;" lay-submit lay-filter="LAY-notice-search">
+							搜索
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<table id="LAY-notice-list" lay-filter="LAY-notice-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('notice', layui.factory('notice'));
+    layui.data.done = function(d) {
+        layui.use(['form'], function() {
+            var form = layui.form;
+            form.render();
+        });
+    };
+</script>

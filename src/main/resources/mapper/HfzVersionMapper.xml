@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzVersionMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzVersion">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="version" jdbcType="VARCHAR" property="version"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="del_status" jdbcType="INTEGER" property="delStatus"/>
+        <result column="content" jdbcType="LONGVARCHAR" property="content"/>
+    </resultMap>
+    <!-- 添加  -->
+    <insert id="insert" parameterType="com.hoostec.hfz.entity.HfzVersion">
+        INSERT INTO hfz_version(id
+        <trim prefix="   ">
+            <if test="version != null">, version</if>
+            <if test="url != null">, url</if>
+            <if test="createTime != null">, create_time</if>
+            <if test="delStatus != null">, del_status</if>
+            <if test="content != null">, content</if>
+        </trim>
+        )
+        VALUES(default
+        <trim prefix="   ">
+            <if test="version != null">, #{version}</if>
+            <if test="url != null">, #{url}</if>
+            <if test="createTime != null">, #{createTime}</if>
+            <if test="delStatus != null">, #{delStatus}</if>
+            <if test="content != null">, #{content}</if>
+        </trim>
+        )
+        <selectKey keyProperty="id" resultType="Integer">
+            SELECT @@IDENTITY AS ID
+        </selectKey>
+    </insert>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzVersion" resultMap="BaseResultMap">
+        SELECT * FROM hfz_version
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="version != null">AND version = #{version}</if>
+            <if test="url != null">AND url = #{url}</if>
+            <if test="createTime != null">AND create_time = #{createTime}</if>
+            <if test="delStatus != null">AND del_status = #{delStatus}</if>
+            <if test="content != null">AND content = #{content}</if>
+        </trim>
+        ORDER BY create_time DESC
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzVersion">
+        UPDATE hfz_version
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="version != null">, version = #{version}</if>
+            <if test="url != null">, url = #{url}</if>
+            <if test="createTime != null">, create_time = #{createTime}</if>
+            <if test="delStatus != null">, del_status = #{delStatus}</if>
+            <if test="content != null">, content = #{content}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+    <!-- 批量删除-->
+    <delete id="deleteAll" parameterType="java.util.List">
+        UPDATE hfz_version SET del_status=-1 WHERE id IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+
+
+
+</mapper>

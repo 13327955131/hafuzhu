@@ -1,0 +1,98 @@
+server:
+  port: 8086
+  #设置session有效期
+  servlet:
+    session:
+      timeout: 3600
+#  ssl:
+#    #    证书路径
+#    key-store: classpath:javasay.pfx
+#    key-store-type: PKCS12
+#    #    配置密码，就是在生成证书的时候输入的密码
+#    key-store-password: 95IOzU4P
+#    key-alias: alias
+spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+    servlet:
+      content-type: text/html
+
+  datasource:
+    name: mysql_test
+    type: com.alibaba.druid.pool.DruidDataSource
+    #druid相关配置
+    druid:
+      #监控统计拦截的filters
+      filters: stat
+      driver-class-name: com.mysql.jdbc.Driver
+      #基本属性47.103.95.141
+      url: jdbc:mysql://127.0.0.1:3306/hfz?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+      username: root
+      password: Cc201818
+      #配置初始化大小/最小/最大
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      #获取连接等待超时时间
+      max-wait: 60000
+      #间隔多久进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      #一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: 20
+      stat-view-servlet:
+        login-username: loo
+        login-password: loo
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    timeout: 10s
+    password:
+
+  #  freemarker:
+  #    suffix: .html
+  #    template-loader-path:
+  #      - classpath:/templates
+  #
+  resources:
+    static-locations:
+      - classpath:/static
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.hoostec.hfz.entity
+
+#分页插件
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
+
+#log4j2
+logging:
+  config: classpath:log4j2.yml
+
+files:
+  path: c://files/
+  staticPath: /statics/**
+
+# API放行url
+pass:
+  url: /api/common/sendCode,/api/user/login/phone,/api/user/login/password,/api/user/register

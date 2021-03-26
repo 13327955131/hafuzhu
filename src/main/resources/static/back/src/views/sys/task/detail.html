@@ -1,0 +1,63 @@
+<title>
+    编辑/新增 权限
+</title>
+
+<div class="layui-form layui-form-pane">
+
+    <script type="text/html" template>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否选做</label>
+            <div class="layui-input-block">
+                <select name="type1" class="layui-select">
+                    <option value="1"{{d.params.type1=='1'?'selected':''}}>必做</option>
+                    <option value="2"{{d.params.type1=='2'?'selected':''}}>选做</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务类型</label>
+            <div class="layui-input-block">
+                <select name="type2">
+                    <option value="1"{{d.params.type2=='1'?'selected':''}}>视频</option>
+                    <option value="2"{{d.params.type2=='2'?'selected':''}}>浏览</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">每日任务次数</label>
+            <div class="layui-input-block">
+                <input type="number" name="num" value="{{d.params.num ||''}}" class="layui-input"
+                       placeholder="输入每日任务次数"  lay-verify="number">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">赠送积分</label>
+            <div class="layui-input-block">
+                <input type="number" name="integral" value="{{d.params.integral ||''}}" class="layui-input"
+                       placeholder="输入赠送的积分数量">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">任务链接</label>
+            <div class="layui-input-block">
+                <input type="text" name="url" value="{{d.params.url ||''}}" class="layui-input"
+                       placeholder="输入链接地址">
+            </div>
+        </div>
+
+    </script>
+    <div class="layui-form-item" align="center" style="margin-top: 35px;">
+        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="LAY-task-submit">确认提交</button>
+    </div>
+</div>
+<script>
+    layui.data.done = function (d) {
+        layui.use(['form'], function () {
+            var form = layui.form;
+            form.render(); //渲染该模板下的动态表单
+
+
+        });
+    };
+</script>

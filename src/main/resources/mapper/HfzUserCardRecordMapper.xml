@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzUserCardRecordMapper">
+<resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzUserCardRecord">
+  <id column="id" jdbcType="INTEGER" property="id" />
+  <result column="user_id" jdbcType="INTEGER" property="userId" />
+  <result column="card_code" jdbcType="VARCHAR" property="cardId" />
+  <result column="get_time" jdbcType="TIMESTAMP" property="getTime" />
+  <result column="get_way" jdbcType="INTEGER" property="getWay" />
+  <result column="del_status" jdbcType="INTEGER" property="delStatus" />
+  <result column="type" jdbcType="INTEGER" property="type" />
+</resultMap>
+<!-- 添加  -->
+<insert id="insert" parameterType="com.hoostec.hfz.entity.HfzUserCardRecord">
+  INSERT INTO hfz_user_card_record(id
+  <trim prefix="   ">
+    <if test="userId != null"> , user_id</if>
+    <if test="cardId != null"> , card_id</if>
+    <if test="getTime != null"> , get_time</if>
+    <if test="getWay != null"> , get_way</if>
+    <if test="delStatus != null"> , del_status</if>
+    <if test="type != null"> , type</if>
+  </trim>
+  )
+  VALUES(default
+  <trim prefix="   ">
+    <if test="userId != null">, #{userId} </if>
+    <if test="cardId != null">, #{cardId} </if>
+    <if test="getTime != null">, #{getTime} </if>
+    <if test="getWay != null">, #{getWay} </if>
+    <if test="delStatus != null">, #{delStatus} </if>
+    <if test="type != null">, #{type} </if>
+  </trim>
+  )
+  <selectKey keyProperty="id" resultType="Integer">
+    SELECT @@IDENTITY AS ID
+  </selectKey>
+</insert>
+<!-- 查询满足条件的全部记录  -->
+<select id="selectAll" parameterType="com.hoostec.hfz.entity.HfzUserCardRecord" resultMap="BaseResultMap">
+  SELECT * FROM hfz_user_card_record
+  <trim prefix=" WHERE " prefixOverrides="AND">
+    <if test="id != null"> AND id = #{id} </if>
+    <if test="userId != null"> AND user_id = #{userId} </if>
+    <if test="cardId != null"> AND card_id = #{cardId} </if>
+    <if test="getTime != null"> AND get_time = #{getTime} </if>
+    <if test="getWay != null"> AND get_way = #{getWay} </if>
+    <if test="delStatus != null"> AND del_status = #{delStatus} </if>
+    <if test="type != null"> AND type = #{type} </if>
+  </trim>
+</select>
+<!-- 修改 -->
+<update id="update" parameterType="com.hoostec.hfz.entity.HfzUserCardRecord">
+  UPDATE hfz_user_card_record
+  <trim prefix=" SET  " prefixOverrides=",">
+    <if test="userId != null"> , user_id = #{userId}</if>
+    <if test="cardId != null"> , card_id = #{cardId}</if>
+    <if test="getTime != null"> , get_time = #{getTime}</if>
+    <if test="getWay != null"> , get_way = #{getWay}</if>
+    <if test="delStatus != null"> , del_status = #{delStatus}</if>
+    <if test="type != null"> , type = #{type}</if>
+  </trim>
+  <trim prefix=" WHERE  " prefixOverrides="">
+    <if test="id != 0"> id = #{id}</if>
+  </trim>
+</update>
+<!-- 批量删除-->
+<delete id="deleteAll" parameterType="java.util.List">
+  UPDATE hfz_user_card_record SET del_status=-1 WHERE id IN
+  <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+    #{item}
+  </foreach>
+</delete>
+
+<!-- 查询满足条件的全部记录  -->
+<select id="selectAllUser" parameterType="com.hoostec.hfz.entity.HfzUserCardRecord" resultMap="BaseResultMap">
+  SELECT hfz_user_card_record.* , hfz_user.nick_name userName, hfz_user.phone userPhone,hfz_card_type.name cardName FROM hfz_user_card_record left join hfz_user on  hfz_user_card_record.user_id=hfz_user.id
+  left join hfz_card_type on  hfz_card_type.id=hfz_user_card_record.card_id
+  where hfz_user.user_status=1
+    <if test="id != null"> AND hfz_user_card_record.id = #{id} </if>
+    <if test="userId != null"> AND hfz_user_card_record.user_id = #{userId} </if>
+    <if test="cardId != null"> AND hfz_user_card_record.card_id = #{cardId} </if>
+    <if test="getTime != null"> AND hfz_user_card_record.get_time = #{getTime} </if>
+    <if test="getWay != null"> AND hfz_user_card_record.get_way = #{getWay} </if>
+    <if test="delStatus != null"> AND hfz_user_card_record.del_status = #{delStatus} </if>
+    <if test="type != null"> AND hfz_user_card_record.type = #{type} </if>
+    <if test="userName != null"> AND concat(hfz_user.nick_name,hfz_user.phone)  like '%${userName}%'  </if>
+
+  order by hfz_user_card_record.id desc
+</select>
+</mapper>

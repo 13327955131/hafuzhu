@@ -1,0 +1,48 @@
+<title>菜单管理</title>
+
+<style>
+	.layui-table-body{
+		height: 150px!important;
+	}
+	.layui-table-main{
+		height: 350px!important;
+	}
+	.layui-table-view{
+		height: 430px!important;
+	}
+
+
+</style>
+
+<div class="layui-fluid">
+	<div class="layui-form" style="padding-bottom: 15px;">
+		<div class="layui-row">
+			<p class="xxx" style="display: none;">...</p>
+			<div class="layui-col-md9">
+
+				<div class="layui-inline" style="padding-top: 5;">
+					<button class="layui-btn layuiadmin-btn-list verifyYes" style="margin-top: 5px;">
+						审核通过
+					</button>
+					<button class="layui-btn  layui-btn-danger verifyNo" style="margin-top: 5px;">
+						审核失败
+					</button>
+					<button class="layui-btn  layui-btn-danger dataOn" style="margin-top: 5px;">
+						数据图
+					</button>
+				</div>
+			</div>
+
+
+		</div>
+
+	</div>
+	<div class="layui-card" style="padding:15px">
+		<table id="LAY-verifyRecord-list" lay-filter="LAY-verifyRecord-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('verifyRecord', layui.factory('verifyRecord'));
+
+
+</script>

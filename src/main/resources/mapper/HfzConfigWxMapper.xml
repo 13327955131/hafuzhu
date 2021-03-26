@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzConfigWxMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzConfigWx">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="app_id" jdbcType="VARCHAR" property="appId"/>
+        <result column="app_secret" jdbcType="VARCHAR" property="appSecret"/>
+        <result column="mch_id" jdbcType="VARCHAR" property="mchId"/>
+        <result column="mch_secret" jdbcType="VARCHAR" property="mchSecret"/>
+        <result column="template_id" jdbcType="VARCHAR" property="templateId"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="spbill_create_ip" jdbcType="VARCHAR" property="spbillCreateIp"/>
+    </resultMap>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectOne" resultMap="BaseResultMap">
+        SELECT * FROM hfz_config_wx
+        limit 1
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzConfigWx">
+        UPDATE hfz_config_wx
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="appId != null">, app_id = #{appId}</if>
+            <if test="appSecret != null">, app_secret = #{appSecret}</if>
+            <if test="mchId != null">, mch_id = #{mchId}</if>
+            <if test="mchSecret != null">, mch_secret = #{mchSecret}</if>
+            <if test="templateId != null">, template_id = #{templateId}</if>
+            <if test="qq != null">, qq = #{qq}</if>
+            <if test="spbillCreateIp != null">, spbill_create_ip = #{spbillCreateIp}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+</mapper>

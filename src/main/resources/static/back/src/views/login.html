@@ -1,0 +1,137 @@
+<script type="text/html" template>
+	<link rel="stylesheet" href="{{ layui.setter.base }}style/login.css?v={{ layui.admin.v }}-1" media="all">
+</script>
+
+<div class="layadmin-user-login layadmin-user-display-show"
+	id="LAY-user-login" style="">
+
+	<div class="layadmin-user-login-main">
+		<div class="layadmin-user-login-header">
+			<h2>哈福猪</h2>
+			<p>管理平台</p>
+		</div>
+		<div
+			class="layadmin-user-login-box layadmin-user-login-body layui-form">
+			<div class="layui-form-item">
+				<label
+					class="layadmin-user-login-icon layui-icon layui-icon-username"
+					for="LAY-user-login-username"></label> <input type="text"
+					name="username" id="LAY-user-login-username" lay-verify="required"
+					placeholder="用户名" class="layui-input">
+			</div>
+			<div class="layui-form-item">
+				<label
+					class="layadmin-user-login-icon layui-icon layui-icon-password"
+					for="LAY-user-login-password"></label> <input type="password"
+					name="password" id="LAY-user-login-password" lay-verify="required"
+					placeholder="密码" class="layui-input">
+			</div>
+			<div class="layui-form-item">
+				<div class="layui-row">
+					<div class="layui-col-xs7">
+						<label
+							class="layadmin-user-login-icon layui-icon layui-icon-vercode"
+							for="LAY-user-login-vercode"></label> <input type="text"
+							id="LAY-user-login-vercode" maxlength="4" lay-verify="vercode"
+							placeholder="图形验证码" class="layui-input">
+					</div>
+					<div class="layui-col-xs5">
+						<div style="margin-left: 10px;">
+							<img title="单击图片刷新验证码！" class="layadmin-user-login-codeimg"
+								id="LAY-user-get-vercode">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="layui-form-item">
+				<button class="layui-btn layui-btn-fluid" id="login_btn" lay-submit
+					lay-filter="LAY-user-login-submit">登 入</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	layui
+			.use(
+					[ 'admin', 'form', 'sys' ],
+					function() {
+						var $ = layui.$, setter = layui.setter, admin = layui.admin, form = layui.form, router = layui
+								.router(), search = router.search;
+						// 清除缓存
+						layui.data(setter.tableName, {
+							key : setter.request.tokenName,
+							remove : true
+						});
+
+						vercode();
+						//更换图形验证码
+						$('body').on('click', '#LAY-user-get-vercode',
+								function() {
+									vercode();
+								});
+
+						// 获取图片验证码
+						function vercode() {
+							admin.req({
+								url : layui.setter.apiUrl + '/common/captcha',
+								type : 'post',
+								done : function(res) {
+									$("#LAY-user-get-vercode").attr("src",
+											res.data.imgSrc);
+									layui.data(setter.tableName, {
+										key : "vercode",
+										value : res.data.verCode
+									});
+								}
+							});
+						}
+
+						form.render();
+						//关联回车
+						document.onkeydown = function(event) {
+							e = event ? event : (window.event ? window.event
+									: null);
+							if (e.keyCode == 13) {
+								document.getElementById("login_btn").click();
+							}
+						};
+
+						//提交
+						form.on('submit(LAY-user-login-submit)', function(obj) {
+							//请求登入接口
+							admin.req({
+								url : layui.setter.apiUrl + '/login',
+								type : 'POST',
+								data : obj.field,
+								done : function(res) {
+									console.log(res)
+									//请求成功后，写入 access_token
+									layui.data(setter.tableName, {
+										key : setter.request.tokenName,
+										value : res.data.token.token
+									});
+
+									// 菜单权限
+									layui.data(setter.tableName, {
+										key : "menuList",
+										value : res.data.menuList
+									});
+									// 按钮权限
+									layui.data(setter.tableName, {
+										key : "btnList",
+										value : res.data.btnList
+									});
+									//登入成功的提示与跳转
+									layer.msg(res.msg, {
+										icon : 1,
+										time : 1000
+									}, function() {
+										location.hash = '/';
+									});
+								}
+							});
+						});
+
+					});
+</script>

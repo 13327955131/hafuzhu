@@ -1,0 +1,58 @@
+<title>菜单管理</title>
+
+<div class="layui-card layadmin-header">
+	<div class="layui-breadcrumb" lay-filter="breadcrumb">
+		<a lay-href="">主页</a>
+		<a>
+			<cite>财务统计</cite>
+		</a>
+		<a>
+			<cite>支出统计</cite>
+		</a>
+	</div>
+</div>
+<style>
+	.layui-input {
+		margin-top: 5px;
+		padding-right: 30px;
+		cursor: pointer;
+	}
+	.layui-input-inline{
+		width: 150px!important;
+	}
+</style>
+<div class="layui-fluid">
+	<div class="layui-card" style="padding:15px">
+		<div class="layui-form" style="padding-bottom: 15px;">
+			<div class="layui-row">
+				<p class="xxx" style="display: none;">...</p>
+				<div class="layui-col-md9">
+
+					<div class="layui-inline">
+						<label class="layui-form-label" style="margin-top: 5px;">开始时间</label>
+						<div class="layui-input-inline">
+							<input type="text" name="startTime" class="layui-input" id="times1" placeholder="yyyy-MM-dd">
+						</div>
+					</div>
+					<div class="layui-inline">
+						<label class="layui-form-label" style="margin-top: 5px;">结束时间</label>
+						<div class="layui-input-inline">
+							<input type="text" name="endTime" class="layui-input" id="times2" placeholder="yyyy-MM-dd">
+						</div>
+					</div>
+
+					<div class="layui-inline">
+						<button class="layui-btn layuiadmin-btn-list" style="margin-top: 5px;" lay-submit lay-filter="LAY-pay-search">
+							搜索
+						</button>
+					</div>
+				</div>
+			</div>
+
+		</div>
+		<table id="LAY-pay-list" lay-filter="LAY-pay-list"></table>
+	</div>
+</div>
+<script>
+    layui.use('payDay', layui.factory('payDay'));
+</script>

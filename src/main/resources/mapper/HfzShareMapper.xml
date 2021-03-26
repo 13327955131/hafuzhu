@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hoostec.hfz.dao.HfzShareMapper">
+    <resultMap id="BaseResultMap" type="com.hoostec.hfz.entity.HfzShare">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <!-- 查询满足条件的全部记录  -->
+    <select id="selectOne" parameterType="com.hoostec.hfz.entity.HfzShare" resultMap="BaseResultMap">
+        SELECT * FROM hfz_share
+        <trim prefix=" WHERE " prefixOverrides="AND">
+            <if test="id != null">AND id = #{id}</if>
+            <if test="url != null">AND url = #{url}</if>
+            <if test="title != null">AND title = #{title}</if>
+            <if test="img != null">AND img = #{img}</if>
+            <if test="remark != null">AND remark = #{remark}</if>
+        </trim>
+        limit 1
+    </select>
+    <!-- 修改 -->
+    <update id="update" parameterType="com.hoostec.hfz.entity.HfzShare">
+        UPDATE hfz_share
+        <trim prefix=" SET  " prefixOverrides=",">
+            <if test="url != null">, url = #{url}</if>
+            <if test="title != null">, title = #{title}</if>
+            <if test="img != null">, img = #{img}</if>
+            <if test="remark != null">, remark = #{remark}</if>
+        </trim>
+        <trim prefix=" WHERE  " prefixOverrides="">
+            <if test="id != 0">id = #{id}</if>
+        </trim>
+    </update>
+
+</mapper>
