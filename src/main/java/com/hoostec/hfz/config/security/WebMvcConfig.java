@@ -20,13 +20,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	}
 
 	/**
-	 * 上传文件根路径
-	 */
-	@Value("${files.path}")
-	private String filesPath;
+     * 上传文件根路径
+     */
+    @Value("${files.path}")
+    private String filesPath;
 
-	@Value("${files.staticPath}")
-	private String staticPath;
+    @Value("${files.staticPath}")
+    private String staticPath;
 
 	/**
 	 * 外部文件访问
